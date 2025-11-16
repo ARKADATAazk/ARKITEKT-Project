@@ -195,6 +195,7 @@ function M.render(ctx, size, h, s, v)
   end
 
   -- === RENDER SV TRIANGLE ===
+  -- Use a completely different approach: base color + alpha overlays
   local cos_hue_angle = math.cos(h * 2 * math.pi)
   local sin_hue_angle = math.sin(h * 2 * math.pi)
 
@@ -205,62 +206,84 @@ function M.render(ctx, size, h, s, v)
   local trc_x = center_x + cos_hue_angle * triangle_pc_x - sin_hue_angle * triangle_pc_y
   local trc_y = center_y + sin_hue_angle * triangle_pc_x + cos_hue_angle * triangle_pc_y
 
-  -- Get pure hue color
-  local r_hue, g_hue, b_hue = hsv_to_rgb(h, 1, 1)
-  local hue_color32 = ImGui.ColorConvertDouble4ToU32(r_hue/255, g_hue/255, b_hue/255, 1)
+  -- NEW APPROACH: Grid of axis-aligned quads with proper color interpolation
+  -- Calculate triangle bounding box
+  local tri_min_x = math.min(tra_x, trb_x, trc_x)
+  local tri_max_x = math.max(tra_x, trb_x, trc_x)
+  local tri_min_y = math.min(tra_y, trb_y, trc_y)
+  local tri_max_y = math.max(tra_y, trb_y, trc_y)
 
-  -- Draw triangle with smooth GPU gradients using AddRectFilledMultiColor
-  -- Each horizontal strip has 4-corner vertex colors interpolated by GPU
-  local num_strips = 200
+  -- Divide into a fine grid (smaller = smoother)
+  local grid_size = 4  -- Size of each grid cell in pixels
+  local nx = math.ceil((tri_max_x - tri_min_x) / grid_size)
+  local ny = math.ceil((tri_max_y - tri_min_y) / grid_size)
 
-  for i = 0, num_strips - 1 do
-    local t1 = i / num_strips
-    local t2 = (i + 1) / num_strips
+  -- Helper to get color at a point in the triangle
+  local function get_color_at_point(px, py)
+    -- Convert to unrotated space
+    local cos_neg = math.cos(-h * 2 * math.pi)
+    local sin_neg = math.sin(-h * 2 * math.pi)
+    local off_x = px - center_x
+    local off_y = py - center_y
+    local unrot_x, unrot_y = rotate_point(off_x, off_y, cos_neg, sin_neg)
 
-    -- Left edge points (hue → black)
-    local left1_x = tra_x + (trb_x - tra_x) * t1
-    local left1_y = tra_y + (trb_y - tra_y) * t1
-    local left2_x = tra_x + (trb_x - tra_x) * t2
-    local left2_y = tra_y + (trb_y - tra_y) * t2
+    -- Get barycentric coordinates
+    local uu, vv, ww = get_barycentric(
+      unrot_x, unrot_y,
+      triangle_pa_x, triangle_pa_y,
+      triangle_pb_x, triangle_pb_y,
+      triangle_pc_x, triangle_pc_y)
 
-    -- Right edge points (hue → white)
-    local right1_x = tra_x + (trc_x - tra_x) * t1
-    local right1_y = tra_y + (trc_y - tra_y) * t1
-    local right2_x = tra_x + (trc_x - tra_x) * t2
-    local right2_y = tra_y + (trc_y - tra_y) * t2
+    -- Calculate SV from barycentric
+    -- tra = hue (S=1, V=1), trb = black (S=0, V=0), trc = white (S=0, V=1)
+    local point_v = math.max(0, math.min(1, 1 - vv))
+    local point_s = (point_v > 0.001) and math.max(0, math.min(1, uu / point_v)) or 0
 
-    -- Calculate corner colors in HSV space for accuracy
-    -- Left edge: hue with V decreasing (towards black)
-    local left1_r, left1_g, left1_b = hsv_to_rgb(h, 1, 1 - t1)
-    local left2_r, left2_g, left2_b = hsv_to_rgb(h, 1, 1 - t2)
+    -- Convert to RGB
+    local r, g, b = hsv_to_rgb(h, point_s, point_v)
+    return ImGui.ColorConvertDouble4ToU32(r/255, g/255, b/255, 1)
+  end
 
-    -- Right edge: hue with S decreasing (towards white)
-    local right1_r, right1_g, right1_b = hsv_to_rgb(h, 1 - t1, 1)
-    local right2_r, right2_g, right2_b = hsv_to_rgb(h, 1 - t2, 1)
+  -- Draw grid of axis-aligned rectangles
+  for iy = 0, ny - 1 do
+    for ix = 0, nx - 1 do
+      local x1 = tri_min_x + ix * grid_size
+      local y1 = tri_min_y + iy * grid_size
+      local x2 = math.min(tri_min_x + (ix + 1) * grid_size, tri_max_x)
+      local y2 = math.min(tri_min_y + (iy + 1) * grid_size, tri_max_y)
 
-    local left1_col = ImGui.ColorConvertDouble4ToU32(left1_r/255, left1_g/255, left1_b/255, 1)
-    local left2_col = ImGui.ColorConvertDouble4ToU32(left2_r/255, left2_g/255, left2_b/255, 1)
-    local right1_col = ImGui.ColorConvertDouble4ToU32(right1_r/255, right1_g/255, right1_b/255, 1)
-    local right2_col = ImGui.ColorConvertDouble4ToU32(right2_r/255, right2_g/255, right2_b/255, 1)
+      local cx_rect = (x1 + x2) / 2
+      local cy_rect = (y1 + y2) / 2
 
-    -- Draw horizontal strip with 4-corner gradient (GPU interpolates!)
-    -- Find bounding rectangle for this trapezoid strip
-    local min_x = math.min(left1_x, left2_x, right1_x, right2_x)
-    local min_y = math.min(left1_y, left2_y, right1_y, right2_y)
-    local max_x = math.max(left1_x, left2_x, right1_x, right2_x)
-    local max_y = math.max(left1_y, left2_y, right1_y, right2_y)
+      -- Check if rectangle center is inside triangle
+      local cos_neg = math.cos(-h * 2 * math.pi)
+      local sin_neg = math.sin(-h * 2 * math.pi)
+      local off_x = cx_rect - center_x
+      local off_y = cy_rect - center_y
+      local unrot_x, unrot_y = rotate_point(off_x, off_y, cos_neg, sin_neg)
 
-    -- AddRectFilledMultiColor: top-left, top-right, bottom-right, bottom-left
-    ImGui.DrawList_AddRectFilledMultiColor(draw_list,
-      min_x, min_y, max_x, max_y,
-      left1_col, right1_col, right2_col, left2_col)
+      if point_in_triangle(unrot_x, unrot_y,
+                          triangle_pa_x, triangle_pa_y,
+                          triangle_pb_x, triangle_pb_y,
+                          triangle_pc_x, triangle_pc_y) then
+        -- Get colors for 4 corners
+        local col_tl = get_color_at_point(x1, y1)
+        local col_tr = get_color_at_point(x2, y1)
+        local col_br = get_color_at_point(x2, y2)
+        local col_bl = get_color_at_point(x1, y2)
+
+        -- Draw with GPU interpolation
+        ImGui.DrawList_AddRectFilledMultiColor(draw_list, x1, y1, x2, y2,
+          col_tl, col_tr, col_br, col_bl)
+      end
+    end
   end
 
   -- THICK black borders for visibility
   ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_outer, col_black, 64, 3.0)
   ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_inner, col_black, 64, 3.0)
 
-  -- Triangle border using PathStroke
+  -- Triangle border
   ImGui.DrawList_PathClear(draw_list)
   ImGui.DrawList_PathLineTo(draw_list, tra_x, tra_y)
   ImGui.DrawList_PathLineTo(draw_list, trb_x, trb_y)
