@@ -119,32 +119,26 @@ local function render_picker_contents(ctx, id, on_change)
   local inst = get_instance(id)
   local changed = false
 
-  -- Style the color picker with dark borders
-  ImGui.PushStyleColor(ctx, ImGui.Col_Border, hexrgb("#000000FF"))
-  ImGui.PushStyleVar(ctx, ImGui.StyleVar_FrameBorderSize, 1)
+  -- Initialize HSV values if needed
+  if not inst.h then
+    local r = (inst.current_color >> 24) & 0xFF
+    local g = (inst.current_color >> 16) & 0xFF
+    local b = (inst.current_color >> 8) & 0xFF
+    inst.h, inst.s, inst.v = rgb_to_hsv(r, g, b)
+  end
 
-  -- Color picker configuration
-  local picker_flags = ImGui.ColorEditFlags_PickerHueWheel |
-                       ImGui.ColorEditFlags_NoSidePreview |
-                       ImGui.ColorEditFlags_NoSmallPreview |
-                       ImGui.ColorEditFlags_NoAlpha |
-                       ImGui.ColorEditFlags_NoInputs |
-                       ImGui.ColorEditFlags_NoLabel
-
-  -- Convert our RGBA to ImGui's ARGB format
-  local argb_color = Colors.rgba_to_argb(inst.current_color)
-
-  -- Draw the color picker (hue wheel + triangle)
-  local rv, new_argb_color = ImGui.ColorPicker4(ctx, '##picker_' .. id, argb_color, picker_flags)
-
-  ImGui.PopStyleVar(ctx, 1)
-  ImGui.PopStyleColor(ctx, 1)
+  -- Use custom picker for enhanced rendering (size 195 for floating window)
+  local rv, new_h, new_s, new_v = CustomPicker.render(ctx, 195, inst.h, inst.s, inst.v)
 
   -- Track color changes during dragging, but only apply on mouse release
   if rv then
-    -- Convert ImGui's ARGB back to our RGBA format
-    local new_rgba = Colors.argb_to_rgba(new_argb_color)
-    inst.current_color = new_rgba
+    inst.h = new_h
+    inst.s = new_s
+    inst.v = new_v
+
+    -- Convert HSV back to RGB and then to RGBA color
+    local r, g, b = hsv_to_rgb(inst.h, inst.s, inst.v)
+    inst.current_color = (math.floor(r) << 24) | (math.floor(g) << 16) | (math.floor(b) << 8) | 0xFF
     changed = true
 
     -- Store that we have a pending change
@@ -274,21 +268,17 @@ function M.render_inline(ctx, id, config)
     inst.first_open = false
   end
 
-  -- Use ImGui's ColorPicker4 (better rendering)
-  local picker_flags = ImGui.ColorEditFlags_PickerHueWheel |
-                       ImGui.ColorEditFlags_NoSidePreview |
-                       ImGui.ColorEditFlags_NoSmallPreview |
-                       ImGui.ColorEditFlags_NoAlpha |
-                       ImGui.ColorEditFlags_NoInputs |
-                       ImGui.ColorEditFlags_NoLabel
+  -- Use custom picker for enhanced rendering
+  local changed, new_h, new_s, new_v = CustomPicker.render(ctx, size, inst.h, inst.s, inst.v)
 
-  -- Convert to ARGB for ImGui
-  local argb_color = Colors.rgba_to_argb(inst.current_color)
+  if changed then
+    inst.h = new_h
+    inst.s = new_s
+    inst.v = new_v
 
-  local rv, new_argb_color = ImGui.ColorPicker4(ctx, '##picker_inline_' .. id, argb_color, picker_flags)
-
-  if rv then
-    inst.current_color = Colors.argb_to_rgba(new_argb_color)
+    -- Convert HSV (0-1 range) back to RGB (0-255 range) and then to RGBA color
+    local r, g, b = hsv_to_rgb(inst.h, inst.s, inst.v)
+    inst.current_color = (math.floor(r) << 24) | (math.floor(g) << 16) | (math.floor(b) << 8) | 0xFF
     inst.pending_change = true
   end
 
@@ -300,7 +290,7 @@ function M.render_inline(ctx, id, config)
     end
   end
 
-  return rv
+  return changed
 end
 
 --- Initialize inline picker (call this to show it)
