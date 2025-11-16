@@ -7,61 +7,11 @@
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua;' .. package.path
 local ImGui = require 'imgui' '0.10'
 local Colors = require('rearkitekt.core.colors')
-local CustomPicker = require('rearkitekt.gui.widgets.tools.custom_color_picker')
 
 local M = {}
 
 -- State for each picker instance
 local instances = {}
-
--- Convert RGB to HSV
-local function rgb_to_hsv(r, g, b)
-  r, g, b = r / 255, g / 255, b / 255
-  local max_c = math.max(r, g, b)
-  local min_c = math.min(r, g, b)
-  local delta = max_c - min_c
-
-  local h = 0
-  if delta ~= 0 then
-    if max_c == r then
-      h = ((g - b) / delta) % 6
-    elseif max_c == g then
-      h = (b - r) / delta + 2
-    else
-      h = (r - g) / delta + 4
-    end
-    h = h / 6
-  end
-
-  local s = (max_c == 0) and 0 or (delta / max_c)
-  local v = max_c
-
-  return h, s, v
-end
-
--- Convert HSV to RGB
-local function hsv_to_rgb(h, s, v)
-  local c = v * s
-  local x = c * (1 - math.abs((h * 6) % 2 - 1))
-  local m = v - c
-
-  local r, g, b
-  if h < 1/6 then
-    r, g, b = c, x, 0
-  elseif h < 2/6 then
-    r, g, b = x, c, 0
-  elseif h < 3/6 then
-    r, g, b = 0, c, x
-  elseif h < 4/6 then
-    r, g, b = 0, x, c
-  elseif h < 5/6 then
-    r, g, b = x, 0, c
-  else
-    r, g, b = c, 0, x
-  end
-
-  return math.floor((r + m) * 255), math.floor((g + m) * 255), math.floor((b + m) * 255)
-end
 
 --- Create or get a color picker instance
 --- @param id string Unique identifier for this picker
@@ -73,9 +23,6 @@ local function get_instance(id)
       current_color = 0xFF0000FF,  -- Default red
       backup_color = nil,
       first_open = true,
-      h = 0,
-      s = 1,
-      v = 1,
     }
   end
   return instances[id]
@@ -118,26 +65,23 @@ local function render_picker_contents(ctx, id, on_change)
   local inst = get_instance(id)
   local changed = false
 
-  -- Initialize HSV if needed
-  if not inst.h then
-    local r = (inst.current_color >> 24) & 0xFF
-    local g = (inst.current_color >> 16) & 0xFF
-    local b = (inst.current_color >> 8) & 0xFF
-    inst.h, inst.s, inst.v = rgb_to_hsv(r, g, b)
-  end
+  -- Extract RGB from current color
+  local r = (inst.current_color >> 24) & 0xFF
+  local g = (inst.current_color >> 16) & 0xFF
+  local b = (inst.current_color >> 8) & 0xFF
 
-  -- Use CUSTOM picker with smooth gradients
-  local rv, new_h, new_s, new_v = CustomPicker.render(ctx, 195, inst.h, inst.s, inst.v)
+  -- Use native ColorPicker4 with hue wheel
+  local flags = ImGui.ColorEditFlags_PickerHueWheel |
+                ImGui.ColorEditFlags_NoSidePreview |
+                ImGui.ColorEditFlags_NoAlpha
 
-  -- Track color changes during dragging, but only apply on mouse release
+  local rv, new_r, new_g, new_b = ImGui.ColorPicker4(ctx, "##picker", r/255, g/255, b/255, flags)
+
   if rv then
-    inst.h = new_h
-    inst.s = new_s
-    inst.v = new_v
-
-    -- Convert HSV back to RGBA
-    local r, g, b = hsv_to_rgb(inst.h, inst.s, inst.v)
-    inst.current_color = (math.floor(r) << 24) | (math.floor(g) << 16) | (math.floor(b) << 8) | 0xFF
+    -- Convert back to packed RGBA
+    inst.current_color = (math.floor(new_r * 255) << 24) |
+                         (math.floor(new_g * 255) << 16) |
+                         (math.floor(new_b * 255) << 8) | 0xFF
     changed = true
 
     -- Store that we have a pending change
@@ -259,33 +203,26 @@ function M.render_inline(ctx, id, config)
   -- Set initial color if provided
   if config.initial_color and inst.first_open then
     inst.current_color = config.initial_color
-    -- Convert to HSV
-    local r = (inst.current_color >> 24) & 0xFF
-    local g = (inst.current_color >> 16) & 0xFF
-    local b = (inst.current_color >> 8) & 0xFF
-    inst.h, inst.s, inst.v = rgb_to_hsv(r, g, b)
     inst.first_open = false
   end
 
-  -- Initialize HSV if needed
-  if not inst.h then
-    local r = (inst.current_color >> 24) & 0xFF
-    local g = (inst.current_color >> 16) & 0xFF
-    local b = (inst.current_color >> 8) & 0xFF
-    inst.h, inst.s, inst.v = rgb_to_hsv(r, g, b)
-  end
+  -- Extract RGB from current color
+  local r = (inst.current_color >> 24) & 0xFF
+  local g = (inst.current_color >> 16) & 0xFF
+  local b = (inst.current_color >> 8) & 0xFF
 
-  -- Use CUSTOM picker with smooth gradients
-  local rv, new_h, new_s, new_v = CustomPicker.render(ctx, size, inst.h, inst.s, inst.v)
+  -- Use native ColorPicker4 with hue wheel
+  local flags = ImGui.ColorEditFlags_PickerHueWheel |
+                ImGui.ColorEditFlags_NoSidePreview |
+                ImGui.ColorEditFlags_NoAlpha
+
+  local rv, new_r, new_g, new_b = ImGui.ColorPicker4(ctx, "##picker_inline", r/255, g/255, b/255, flags)
 
   if rv then
-    inst.h = new_h
-    inst.s = new_s
-    inst.v = new_v
-
-    -- Convert HSV back to RGBA
-    local r, g, b = hsv_to_rgb(inst.h, inst.s, inst.v)
-    inst.current_color = (math.floor(r) << 24) | (math.floor(g) << 16) | (math.floor(b) << 8) | 0xFF
+    -- Convert back to packed RGBA
+    inst.current_color = (math.floor(new_r * 255) << 24) |
+                         (math.floor(new_g * 255) << 16) |
+                         (math.floor(new_b * 255) << 8) | 0xFF
     inst.pending_change = true
   end
 
@@ -308,11 +245,6 @@ function M.show_inline(id, initial_color)
   inst.first_open = true
   if initial_color then
     inst.current_color = initial_color
-    -- Convert to HSV
-    local r = (initial_color >> 24) & 0xFF
-    local g = (initial_color >> 16) & 0xFF
-    local b = (initial_color >> 8) & 0xFF
-    inst.h, inst.s, inst.v = rgb_to_hsv(r, g, b)
   end
 end
 
