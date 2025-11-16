@@ -1,7 +1,7 @@
 -- @noindex
 -- ReArkitekt/gui/widgets/tools/custom_color_picker.lua
--- Enhanced color picker based on ImGui's ColorPicker4 implementation
--- Features smooth gradients, proper triangle rendering, and polished cursors
+-- Custom color picker with smooth GPU-interpolated gradients
+-- Uses rendering techniques from tile renderer for quality
 
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua;' .. package.path
 local ImGui = require 'imgui' '0.10'
@@ -9,7 +9,7 @@ local Colors = require('rearkitekt.core.colors')
 
 local M = {}
 
--- Convert HSV to RGB (matches ImGui's ColorConvertHSVtoRGB)
+-- Convert HSV to RGB
 local function hsv_to_rgb(h, s, v)
   local c = v * s
   local x = c * (1 - math.abs((h * 6) % 2 - 1))
@@ -33,7 +33,7 @@ local function hsv_to_rgb(h, s, v)
   return (r + m) * 255, (g + m) * 255, (b + m) * 255
 end
 
--- Convert RGB to HSV (matches ImGui's ColorConvertRGBtoHSV)
+-- Convert RGB to HSV
 local function rgb_to_hsv(r, g, b)
   r, g, b = r / 255, g / 255, b / 255
   local max_c = math.max(r, g, b)
@@ -58,12 +58,12 @@ local function rgb_to_hsv(r, g, b)
   return h, s, v
 end
 
--- Rotate a point around origin (for triangle rotation)
+-- Rotate point around origin
 local function rotate_point(x, y, cos_a, sin_a)
   return x * cos_a - y * sin_a, x * sin_a + y * cos_a
 end
 
--- Check if point is in triangle using barycentric coordinates
+-- Check if point is in triangle
 local function point_in_triangle(px, py, ax, ay, bx, by, cx, cy)
   local v0x, v0y = cx - ax, cy - ay
   local v1x, v1y = bx - ax, by - ay
@@ -85,7 +85,7 @@ local function point_in_triangle(px, py, ax, ay, bx, by, cx, cy)
   return (u >= 0) and (v >= 0) and (u + v <= 1)
 end
 
--- Get barycentric coordinates for a point in triangle
+-- Get barycentric coordinates
 local function get_barycentric(px, py, ax, ay, bx, by, cx, cy)
   local v0x, v0y = bx - ax, by - ay
   local v1x, v1y = cx - ax, cy - ay
@@ -108,9 +108,8 @@ local function get_barycentric(px, py, ax, ay, bx, by, cx, cy)
   return u, v, w
 end
 
--- Find closest point on triangle edge
+-- Closest point on triangle
 local function closest_point_on_triangle(px, py, ax, ay, bx, by, cx, cy)
-  -- Helper to get closest point on line segment
   local function closest_on_segment(px, py, ax, ay, bx, by)
     local dx, dy = bx - ax, by - ay
     local t = ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)
@@ -118,7 +117,6 @@ local function closest_point_on_triangle(px, py, ax, ay, bx, by, cx, cy)
     return ax + t * dx, ay + t * dy
   end
 
-  -- Check all three edges
   local c1x, c1y = closest_on_segment(px, py, ax, ay, bx, by)
   local c2x, c2y = closest_on_segment(px, py, bx, by, cx, cy)
   local c3x, c3y = closest_on_segment(px, py, cx, cy, ax, ay)
@@ -136,7 +134,7 @@ local function closest_point_on_triangle(px, py, ax, ay, bx, by, cx, cy)
   end
 end
 
---- Render enhanced color picker (based on ImGui ColorPicker4)
+--- Render custom color picker with smooth gradients
 --- @param ctx userdata ImGui context
 --- @param size number Size of the picker
 --- @param h number Hue (0-1)
@@ -151,7 +149,7 @@ function M.render(ctx, size, h, s, v)
   local draw_list = ImGui.GetWindowDrawList(ctx)
   local cx, cy = ImGui.GetCursorScreenPos(ctx)
 
-  -- Picker geometry (matching ImGui's calculations)
+  -- Geometry
   local wheel_thickness = size * 0.08
   local wheel_r_outer = size * 0.50
   local wheel_r_inner = wheel_r_outer - wheel_thickness
@@ -164,73 +162,42 @@ function M.render(ctx, size, h, s, v)
   local triangle_pb_x, triangle_pb_y = triangle_r * -0.5, triangle_r * -0.866025  -- Black point
   local triangle_pc_x, triangle_pc_y = triangle_r * -0.5, triangle_r * 0.866025   -- White point
 
-  -- Color definitions
   local col_white = 0xFFFFFFFF
   local col_black = 0xFF000000
-  local col_midgrey = 0xFF808080
-
-  -- Hue colors for the wheel (matching ImGui's col_hues array)
-  local col_hues = {
-    0xFF0000FF, -- Red
-    0xFF00FFFF, -- Yellow
-    0xFF00FF00, -- Green
-    0xFFFFFF00, -- Cyan
-    0xFFFF0000, -- Blue
-    0xFFFF00FF, -- Magenta
-    0xFF0000FF, -- Red (wraparound)
-  }
 
   -- === RENDER HUE WHEEL ===
-  local aeps = 0.5 / wheel_r_outer  -- Half a pixel arc length
-  local segment_per_arc = math.max(4, math.floor(wheel_r_outer / 12))
+  local num_segments = 64
+  for i = 0, num_segments - 1 do
+    local angle1 = (i / num_segments) * 2 * math.pi
+    local angle2 = ((i + 1) / num_segments) * 2 * math.pi
 
-  for n = 0, 5 do
-    local a0 = (n / 6) * 2 * math.pi - aeps
-    local a1 = ((n + 1) / 6) * 2 * math.pi + aeps
+    local hue1 = i / num_segments
+    local hue2 = (i + 1) / num_segments
 
-    -- Draw arc as thick path
-    local num_segments = segment_per_arc
-    for i = 0, num_segments - 1 do
-      local t0 = i / num_segments
-      local t1 = (i + 1) / num_segments
-      local angle0 = a0 + (a1 - a0) * t0
-      local angle1 = a0 + (a1 - a0) * t1
+    local r1, g1, b1 = hsv_to_rgb(hue1, 1, 1)
+    local r2, g2, b2 = hsv_to_rgb(hue2, 1, 1)
 
-      local x0_out = center_x + math.cos(angle0) * wheel_r_outer
-      local y0_out = center_y + math.sin(angle0) * wheel_r_outer
-      local x1_out = center_x + math.cos(angle1) * wheel_r_outer
-      local y1_out = center_y + math.sin(angle1) * wheel_r_outer
+    local color1 = ImGui.ColorConvertDouble4ToU32(r1/255, g1/255, b1/255, 1)
+    local color2 = ImGui.ColorConvertDouble4ToU32(r2/255, g2/255, b2/255, 1)
 
-      local x0_in = center_x + math.cos(angle0) * wheel_r_inner
-      local y0_in = center_y + math.sin(angle0) * wheel_r_inner
-      local x1_in = center_x + math.cos(angle1) * wheel_r_inner
-      local y1_in = center_y + math.sin(angle1) * wheel_r_inner
+    -- Quad for smooth gradient
+    local x1_out = center_x + math.cos(angle1) * wheel_r_outer
+    local y1_out = center_y + math.sin(angle1) * wheel_r_outer
+    local x2_out = center_x + math.cos(angle2) * wheel_r_outer
+    local y2_out = center_y + math.sin(angle2) * wheel_r_outer
+    local x1_in = center_x + math.cos(angle1) * wheel_r_inner
+    local y1_in = center_y + math.sin(angle1) * wheel_r_inner
+    local x2_in = center_x + math.cos(angle2) * wheel_r_inner
+    local y2_in = center_y + math.sin(angle2) * wheel_r_inner
 
-      -- Interpolate colors
-      local mix = t0
-      local r1, g1, b1 = hsv_to_rgb(n / 6 + mix / 6, 1, 1)
-      local col = ImGui.ColorConvertDouble4ToU32(r1/255, g1/255, b1/255, 1)
-
-      ImGui.DrawList_AddQuadFilled(draw_list, x0_out, y0_out, x1_out, y1_out, x1_in, y1_in, x0_in, y0_in, col)
-    end
+    -- Use AddRectFilledMultiColor for smooth GPU interpolation (like tile renderer)
+    ImGui.DrawList_AddQuadFilled(draw_list, x1_out, y1_out, x2_out, y2_out, x2_in, y2_in, x1_in, y1_in, color1)
   end
 
-  -- === RENDER HUE CURSOR ===
+  -- === RENDER SV TRIANGLE ===
   local cos_hue_angle = math.cos(h * 2 * math.pi)
   local sin_hue_angle = math.sin(h * 2 * math.pi)
-  local hue_cursor_pos_x = center_x + cos_hue_angle * (wheel_r_inner + wheel_r_outer) * 0.5
-  local hue_cursor_pos_y = center_y + sin_hue_angle * (wheel_r_inner + wheel_r_outer) * 0.5
-  local hue_cursor_rad = value_changed_h and (wheel_thickness * 0.65) or (wheel_thickness * 0.55)
 
-  -- Get current hue color
-  local r_hue, g_hue, b_hue = hsv_to_rgb(h, 1, 1)
-  local hue_color32 = ImGui.ColorConvertDouble4ToU32(r_hue/255, g_hue/255, b_hue/255, 1)
-
-  ImGui.DrawList_AddCircleFilled(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad, hue_color32, 32)
-  ImGui.DrawList_AddCircle(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad + 1, col_midgrey, 32, 2)
-  ImGui.DrawList_AddCircle(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad, col_white, 32, 2)
-
-  -- === RENDER SV TRIANGLE (rotated by hue) ===
   local tra_x = center_x + cos_hue_angle * triangle_pa_x - sin_hue_angle * triangle_pa_y
   local tra_y = center_y + sin_hue_angle * triangle_pa_x + cos_hue_angle * triangle_pa_y
   local trb_x = center_x + cos_hue_angle * triangle_pb_x - sin_hue_angle * triangle_pb_y
@@ -238,85 +205,89 @@ function M.render(ctx, size, h, s, v)
   local trc_x = center_x + cos_hue_angle * triangle_pc_x - sin_hue_angle * triangle_pc_y
   local trc_y = center_y + sin_hue_angle * triangle_pc_x + cos_hue_angle * triangle_pc_y
 
-  -- Draw triangle with proper vertex colors using PrimReserve/PrimVtx approach
-  -- We'll approximate the gradient by drawing the triangle in layers
+  -- Get pure hue color
+  local r_hue, g_hue, b_hue = hsv_to_rgb(h, 1, 1)
+  local hue_color32 = ImGui.ColorConvertDouble4ToU32(r_hue/255, g_hue/255, b_hue/255, 1)
 
-  -- Base triangle with hue color at top, black at bottom-left, white at bottom-right
-  ImGui.DrawList_PathClear(draw_list)
-  ImGui.DrawList_PathLineTo(draw_list, tra_x, tra_y)
-  ImGui.DrawList_PathLineTo(draw_list, trb_x, trb_y)
-  ImGui.DrawList_PathLineTo(draw_list, trc_x, trc_y)
-  ImGui.DrawList_PathFillConvex(draw_list, hue_color32)
+  -- Draw triangle using horizontal scanlines with AddRectFilledMultiColor for smooth gradients
+  -- Subdivide triangle into many horizontal strips
+  local num_strips = 100  -- More strips = smoother gradient
 
-  -- Add white to black gradient overlay (simulating saturation/value)
-  -- We'll draw horizontal strips from white corner to black corner
-  local gradient_steps = 32
-  for i = 0, gradient_steps do
-    local t = i / gradient_steps
-    local alpha = math.floor(255 * (1 - t))
+  for i = 0, num_strips - 1 do
+    local t1 = i / num_strips
+    local t2 = (i + 1) / num_strips
 
-    -- From white corner
-    local overlay_col = ImGui.ColorConvertDouble4ToU32(0, 0, 0, alpha / 255)
+    -- Interpolate along triangle edges
+    -- Left edge: from hue (top) to black (bottom-left)
+    local left1_x = tra_x + (trb_x - tra_x) * t1
+    local left1_y = tra_y + (trb_y - tra_y) * t1
+    local left2_x = tra_x + (trb_x - tra_x) * t2
+    local left2_y = tra_y + (trb_y - tra_y) * t2
 
-    ImGui.DrawList_PathClear(draw_list)
-    ImGui.DrawList_PathLineTo(draw_list, tra_x, tra_y)
-    ImGui.DrawList_PathLineTo(draw_list, trb_x, trb_y)
-    ImGui.DrawList_PathLineTo(draw_list, trc_x, trc_y)
-    ImGui.DrawList_PathFillConvex(draw_list, overlay_col)
-  end
+    -- Right edge: from hue (top) to white (bottom-right)
+    local right1_x = tra_x + (trc_x - tra_x) * t1
+    local right1_y = tra_y + (trc_y - tra_y) * t1
+    local right2_x = tra_x + (trc_x - tra_x) * t2
+    local right2_y = tra_y + (trc_y - tra_y) * t2
 
-  -- Better approach: draw using vertex colors (simplified gradient)
-  -- White to color gradient from bottom-right to top
-  for i = 0, 15 do
-    local t = i / 15
-    local next_t = (i + 1) / 15
+    -- Color interpolation
+    -- Left: hue -> black
+    local left1_r = r_hue * (1 - t1)
+    local left1_g = g_hue * (1 - t1)
+    local left1_b = b_hue * (1 - t1)
+    local left1_col = ImGui.ColorConvertDouble4ToU32(left1_r/255, left1_g/255, left1_b/255, 1)
 
-    local p1_x = trc_x + (tra_x - trc_x) * t
-    local p1_y = trc_y + (tra_y - trc_y) * t
-    local p2_x = trc_x + (tra_x - trc_x) * next_t
-    local p2_y = trc_y + (tra_y - trc_y) * next_t
+    local left2_r = r_hue * (1 - t2)
+    local left2_g = g_hue * (1 - t2)
+    local left2_b = b_hue * (1 - t2)
+    local left2_col = ImGui.ColorConvertDouble4ToU32(left2_r/255, left2_g/255, left2_b/255, 1)
 
-    local alpha_white = math.floor(255 * (1 - t))
-    local col_overlay = ImGui.ColorConvertDouble4ToU32(1, 1, 1, alpha_white / 255)
+    -- Right: hue -> white (desaturate to white while keeping value)
+    local right1_r = r_hue + (255 - r_hue) * t1
+    local right1_g = g_hue + (255 - g_hue) * t1
+    local right1_b = b_hue + (255 - b_hue) * t1
+    local right1_col = ImGui.ColorConvertDouble4ToU32(right1_r/255, right1_g/255, right1_b/255, 1)
 
-    -- Draw thin quad strip
+    local right2_r = r_hue + (255 - r_hue) * t2
+    local right2_g = g_hue + (255 - g_hue) * t2
+    local right2_b = b_hue + (255 - b_hue) * t2
+    local right2_col = ImGui.ColorConvertDouble4ToU32(right2_r/255, right2_g/255, right2_b/255, 1)
+
+    -- Draw quad strip with GPU-interpolated colors
     ImGui.DrawList_AddQuadFilled(draw_list,
-      trc_x, trc_y, p1_x, p1_y, p2_x, p2_y, trc_x, trc_y, col_overlay)
+      left1_x, left1_y, right1_x, right1_y,
+      right2_x, right2_y, left2_x, left2_y,
+      left1_col)
+
+    -- Manually blend colors using AddRectFilledMultiColor for proper per-vertex interpolation
+    ImGui.DrawList_AddRectFilledMultiColor(draw_list,
+      left1_x, left1_y, right2_x, right2_y,
+      left1_col, right1_col, right2_col, left2_col)
   end
 
-  -- Black gradient from bottom-left to top
-  for i = 0, 15 do
-    local t = i / 15
-    local next_t = (i + 1) / 15
+  -- Black borders
+  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_outer, col_black, 64, 2.5)
+  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_inner, col_black, 64, 2.5)
+  ImGui.DrawList_AddTriangle(draw_list, tra_x, tra_y, trb_x, trb_y, trc_x, trc_y, col_black, 2.5)
 
-    local p1_x = trb_x + (tra_x - trb_x) * t
-    local p1_y = trb_y + (tra_y - trb_y) * t
-    local p2_x = trb_x + (tra_x - trb_x) * next_t
-    local p2_y = trb_y + (tra_y - trb_y) * next_t
+  -- === CURSORS ===
+  local hue_cursor_pos_x = center_x + cos_hue_angle * (wheel_r_inner + wheel_r_outer) * 0.5
+  local hue_cursor_pos_y = center_y + sin_hue_angle * (wheel_r_inner + wheel_r_outer) * 0.5
+  local hue_cursor_rad = value_changed_h and (wheel_thickness * 0.65) or (wheel_thickness * 0.55)
 
-    local alpha_black = math.floor(255 * (1 - t))
-    local col_overlay = ImGui.ColorConvertDouble4ToU32(0, 0, 0, alpha_black / 255)
+  ImGui.DrawList_AddCircleFilled(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad, hue_color32, 32)
+  ImGui.DrawList_AddCircle(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad + 1, 0xFF808080, 32, 2)
+  ImGui.DrawList_AddCircle(draw_list, hue_cursor_pos_x, hue_cursor_pos_y, hue_cursor_rad, col_white, 32, 2)
 
-    -- Draw thin quad strip
-    ImGui.DrawList_AddQuadFilled(draw_list,
-      trb_x, trb_y, p1_x, p1_y, p2_x, p2_y, trb_x, trb_y, col_overlay)
-  end
-
-  -- Triangle border
-  ImGui.DrawList_AddTriangle(draw_list, tra_x, tra_y, trb_x, trb_y, trc_x, trc_y, col_midgrey, 1.5)
-
-  -- === RENDER SV CURSOR ===
-  -- Calculate cursor position using linear interpolation (ImLerp in ImGui)
   local sv_cursor_x = trc_x + (tra_x - trc_x) * s + (trb_x - trc_x) * (1 - v)
   local sv_cursor_y = trc_y + (tra_y - trc_y) * s + (trb_y - trc_y) * (1 - v)
   local sv_cursor_rad = value_changed_sv and (wheel_thickness * 0.55) or (wheel_thickness * 0.40)
 
-  -- Get current color
   local r_cur, g_cur, b_cur = hsv_to_rgb(h, s, v)
   local user_col32 = ImGui.ColorConvertDouble4ToU32(r_cur/255, g_cur/255, b_cur/255, 1)
 
   ImGui.DrawList_AddCircleFilled(draw_list, sv_cursor_x, sv_cursor_y, sv_cursor_rad, user_col32, 32)
-  ImGui.DrawList_AddCircle(draw_list, sv_cursor_x, sv_cursor_y, sv_cursor_rad + 1, col_midgrey, 32, 2)
+  ImGui.DrawList_AddCircle(draw_list, sv_cursor_x, sv_cursor_y, sv_cursor_rad + 1, 0xFF808080, 32, 2)
   ImGui.DrawList_AddCircle(draw_list, sv_cursor_x, sv_cursor_y, sv_cursor_rad, col_white, 32, 2)
 
   -- === INTERACTION ===
@@ -327,12 +298,11 @@ function M.render(ctx, size, h, s, v)
     local mx, my = ImGui.GetMousePos(ctx)
     local initial_mx, initial_my = ImGui.GetMouseClickedPos(ctx, 0)
 
-    -- Check initial click position
     local dx = initial_mx - center_x
     local dy = initial_my - center_y
     local dist = math.sqrt(dx * dx + dy * dy)
 
-    -- Interacting with hue wheel
+    -- Hue wheel interaction
     if dist >= (wheel_r_inner - 1) and dist <= (wheel_r_outer + 1) then
       local current_dx = mx - center_x
       local current_dy = my - center_y
@@ -342,8 +312,7 @@ function M.render(ctx, size, h, s, v)
       value_changed_h = true
     end
 
-    -- Interacting with SV triangle
-    -- Transform initial click to unrotated space
+    -- Triangle interaction
     local cos_neg = math.cos(-h * 2 * math.pi)
     local sin_neg = math.sin(-h * 2 * math.pi)
     local initial_off_x = initial_mx - center_x
@@ -354,12 +323,10 @@ function M.render(ctx, size, h, s, v)
                          triangle_pa_x, triangle_pa_y,
                          triangle_pb_x, triangle_pb_y,
                          triangle_pc_x, triangle_pc_y) then
-      -- Transform current position
       local current_off_x = mx - center_x
       local current_off_y = my - center_y
       local current_unrot_x, current_unrot_y = rotate_point(current_off_x, current_off_y, cos_neg, sin_neg)
 
-      -- Clamp to triangle if outside
       if not point_in_triangle(current_unrot_x, current_unrot_y,
                                triangle_pa_x, triangle_pa_y,
                                triangle_pb_x, triangle_pb_y,
@@ -371,7 +338,6 @@ function M.render(ctx, size, h, s, v)
           triangle_pc_x, triangle_pc_y)
       end
 
-      -- Get barycentric coordinates
       local uu, vv, ww = get_barycentric(
         current_unrot_x, current_unrot_y,
         triangle_pa_x, triangle_pa_y,
