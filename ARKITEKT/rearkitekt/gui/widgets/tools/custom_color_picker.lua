@@ -209,66 +209,70 @@ function M.render(ctx, size, h, s, v)
   local r_hue, g_hue, b_hue = hsv_to_rgb(h, 1, 1)
   local hue_color32 = ImGui.ColorConvertDouble4ToU32(r_hue/255, g_hue/255, b_hue/255, 1)
 
-  -- Draw triangle with smooth GPU-interpolated gradients
-  -- Use many thin horizontal strips with AddRectFilledMultiColor
-  local num_strips = 300  -- Very fine subdivision for ultra-smooth gradients
+  -- Draw triangle with ultra-smooth gradients using MANY thin strips
+  -- PathFillConvex gives us anti-aliased edges
+  local num_strips = 600  -- Very dense for imperceptible banding
 
   for i = 0, num_strips - 1 do
     local t1 = i / num_strips
     local t2 = (i + 1) / num_strips
 
     -- Interpolate along triangle edges
-    -- Left edge: from hue (top) to black (bottom-left)
     local left1_x = tra_x + (trb_x - tra_x) * t1
     local left1_y = tra_y + (trb_y - tra_y) * t1
     local left2_x = tra_x + (trb_x - tra_x) * t2
     local left2_y = tra_y + (trb_y - tra_y) * t2
 
-    -- Right edge: from hue (top) to white (bottom-right)
     local right1_x = tra_x + (trc_x - tra_x) * t1
     local right1_y = tra_y + (trc_y - tra_y) * t1
     local right2_x = tra_x + (trc_x - tra_x) * t2
     local right2_y = tra_y + (trc_y - tra_y) * t2
 
-    -- Color interpolation
-    -- Left: hue -> black (linear brightness decrease)
-    local left1_r = r_hue * (1 - t1)
-    local left1_g = g_hue * (1 - t1)
-    local left1_b = b_hue * (1 - t1)
+    -- Color interpolation (HSV-based for correct color space)
+    local left_h, left_s, left_v = h, 1, 1 - t1  -- Towards black: decrease value
+    local right_h, right_s, right_v = h, 1 - t1, 1  -- Towards white: decrease saturation
+
+    local left1_r, left1_g, left1_b = hsv_to_rgb(left_h, left_s, left_v)
+    local left2_r, left2_g, left2_b = hsv_to_rgb(h, 1, 1 - t2)
+
+    local right1_r, right1_g, right1_b = hsv_to_rgb(right_h, right_s, right_v)
+    local right2_r, right2_g, right2_b = hsv_to_rgb(h, 1 - t2, 1)
+
     local left1_col = ImGui.ColorConvertDouble4ToU32(left1_r/255, left1_g/255, left1_b/255, 1)
-
-    local left2_r = r_hue * (1 - t2)
-    local left2_g = g_hue * (1 - t2)
-    local left2_b = b_hue * (1 - t2)
     local left2_col = ImGui.ColorConvertDouble4ToU32(left2_r/255, left2_g/255, left2_b/255, 1)
-
-    -- Right: hue -> white (linear saturation decrease)
-    local right1_r = r_hue + (255 - r_hue) * t1
-    local right1_g = g_hue + (255 - g_hue) * t1
-    local right1_b = b_hue + (255 - b_hue) * t1
     local right1_col = ImGui.ColorConvertDouble4ToU32(right1_r/255, right1_g/255, right1_b/255, 1)
-
-    local right2_r = r_hue + (255 - r_hue) * t2
-    local right2_g = g_hue + (255 - g_hue) * t2
-    local right2_b = b_hue + (255 - b_hue) * t2
     local right2_col = ImGui.ColorConvertDouble4ToU32(right2_r/255, right2_g/255, right2_b/255, 1)
 
-    -- Find bounding box for this strip
+    -- Draw quad strip using path for proper clipping (anti-aliased edges)
+    ImGui.DrawList_PathClear(draw_list)
+    ImGui.DrawList_PathLineTo(draw_list, left1_x, left1_y)
+    ImGui.DrawList_PathLineTo(draw_list, right1_x, right1_y)
+    ImGui.DrawList_PathLineTo(draw_list, right2_x, right2_y)
+    ImGui.DrawList_PathLineTo(draw_list, left2_x, left2_y)
+    ImGui.DrawList_PathFillConvex(draw_list, left1_col)  -- Single color per strip
+
+    -- Also draw with AddRectFilledMultiColor for horizontal gradient within each strip
     local min_x = math.min(left1_x, left2_x, right1_x, right2_x)
     local min_y = math.min(left1_y, left2_y, right1_y, right2_y)
     local max_x = math.max(left1_x, left2_x, right1_x, right2_x)
     local max_y = math.max(left1_y, left2_y, right1_y, right2_y)
 
-    -- Draw with 4-corner gradient (GPU interpolates smoothly)
+    -- Blend horizontal gradient
     ImGui.DrawList_AddRectFilledMultiColor(draw_list,
       min_x, min_y, max_x, max_y,
       left1_col, right1_col, right2_col, left2_col)
   end
 
-  -- Thin black borders for clean look (anti-aliased by ImGui)
-  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_outer, col_black, 64, 1.5)
-  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_inner, col_black, 64, 1.5)
-  ImGui.DrawList_AddTriangle(draw_list, tra_x, tra_y, trb_x, trb_y, trc_x, trc_y, col_black, 1.5)
+  -- Clean black borders with anti-aliasing
+  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_outer, col_black, 64, 1.2)
+  ImGui.DrawList_AddCircle(draw_list, center_x, center_y, wheel_r_inner, col_black, 64, 1.2)
+
+  -- Use PathStroke for triangle border (anti-aliased)
+  ImGui.DrawList_PathClear(draw_list)
+  ImGui.DrawList_PathLineTo(draw_list, tra_x, tra_y)
+  ImGui.DrawList_PathLineTo(draw_list, trb_x, trb_y)
+  ImGui.DrawList_PathLineTo(draw_list, trc_x, trc_y)
+  ImGui.DrawList_PathStroke(draw_list, col_black, ImGui.DrawFlags_Closed, 1.2)
 
   -- === CURSORS ===
   local hue_cursor_pos_x = center_x + cos_hue_angle * (wheel_r_inner + wheel_r_outer) * 0.5
