@@ -70,12 +70,11 @@ local function render_picker_contents(ctx, id, on_change)
   local g = (inst.current_color >> 16) & 0xFF
   local b = (inst.current_color >> 8) & 0xFF
 
-  -- Use native ColorPicker4 with hue wheel
+  -- Use native ColorPicker3 with hue wheel (no alpha needed)
   local flags = ImGui.ColorEditFlags_PickerHueWheel |
-                ImGui.ColorEditFlags_NoSidePreview |
-                ImGui.ColorEditFlags_NoAlpha
+                ImGui.ColorEditFlags_NoSidePreview
 
-  local rv, new_r, new_g, new_b = ImGui.ColorPicker4(ctx, "##picker", r/255, g/255, b/255, flags)
+  local rv, new_r, new_g, new_b = ImGui.ColorPicker3(ctx, "##picker", r/255, g/255, b/255, flags)
 
   if rv then
     -- Convert back to packed RGBA
@@ -211,12 +210,11 @@ function M.render_inline(ctx, id, config)
   local g = (inst.current_color >> 16) & 0xFF
   local b = (inst.current_color >> 8) & 0xFF
 
-  -- Use native ColorPicker4 with hue wheel
+  -- Use native ColorPicker3 with hue wheel (no alpha needed)
   local flags = ImGui.ColorEditFlags_PickerHueWheel |
-                ImGui.ColorEditFlags_NoSidePreview |
-                ImGui.ColorEditFlags_NoAlpha
+                ImGui.ColorEditFlags_NoSidePreview
 
-  local rv, new_r, new_g, new_b = ImGui.ColorPicker4(ctx, "##picker_inline", r/255, g/255, b/255, flags)
+  local rv, new_r, new_g, new_b = ImGui.ColorPicker3(ctx, "##picker_inline", r/255, g/255, b/255, flags)
 
   if rv then
     -- Convert back to packed RGBA
