@@ -201,12 +201,24 @@ end
 function M.render(ctx, state)
   local dl = ImGui.GetWindowDrawList(ctx)
 
-  -- Generate items if needed
-  if not state.grid or not state.grid.items then
-    if not state.grid then state.grid = {} end
+  -- Initialize grid state if needed
+  if not state.grid then
+    state.grid = {}
+  end
+
+  if not state.grid.items then
     state.grid.items = generate_sample_items()
+  end
+
+  if not state.grid.selected_items then
     state.grid.selected_items = {}
+  end
+
+  if not state.grid.tile_size then
     state.grid.tile_size = 120
+  end
+
+  if not state.grid.gap then
     state.grid.gap = 12
   end
 
