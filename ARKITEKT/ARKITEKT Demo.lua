@@ -67,7 +67,9 @@ local style_ok, Style = pcall(require, "rearkitekt.gui.style.imgui_defaults")
 
 -- Demo modules
 local State = require("Demo.core.state")
-local MainGUI = require("Demo.ui.main_gui")
+local WelcomeView = require("Demo.ui.welcome_view")
+local PrimitivesView = require("Demo.ui.primitives_view")
+local GridView = require("Demo.ui.grid_view")
 
 -- ============================================================================
 -- INITIALIZE APPLICATION STATE
@@ -85,18 +87,25 @@ local state = State.initialize()
 --
 -- WHY THIS PATTERN:
 -- The draw function is called every frame by the Shell.
--- We receive the ImGui context and need to draw our entire UI.
+-- We receive the ImGui context and shell_state (which includes window).
+-- We use window:get_active_tab() to know which tab is active.
 -- The Shell handles window management, styling, fonts - we just draw content.
 --
 -- @param ctx ImGui context
--- @param app_state table Application state managed by Shell (fonts, style, etc.)
+-- @param shell_state table Shell state (window, fonts, style, etc.)
 
-local function draw(ctx, app_state)
-  -- Get available space
-  local avail_w, avail_h = ImGui.GetContentRegionAvail(ctx)
+local function draw(ctx, shell_state)
+  -- Get active tab from menutabs system
+  local active_tab = shell_state.window:get_active_tab()
 
-  -- Render main GUI
-  MainGUI.render(ctx, state, avail_w, avail_h)
+  -- Render the appropriate view based on active tab
+  if active_tab == "WELCOME" then
+    WelcomeView.render(ctx, state)
+  elseif active_tab == "PRIMITIVES" then
+    PrimitivesView.render(ctx, state)
+  elseif active_tab == "GRID" then
+    GridView.render(ctx, state)
+  end
 end
 
 -- ============================================================================
@@ -123,24 +132,27 @@ Shell.run({
   version = "1.0.0",
 
   -- Initial window size
-  initial_size = { w = 900, h = 700 },
+  initial_size = { w = 950, h = 700 },
   min_size = { w = 700, h = 500 },
 
-  -- Custom font sizes (optional)
-  fonts = {
-    default = 14,
-    title = 18,
-    version = 11,
+  -- Menutabs configuration (Shell-level tabs)
+  tabs = {
+    items = {
+      { id = "WELCOME", label = "👋 Welcome" },
+      { id = "PRIMITIVES", label = "🔘 Primitives" },
+      { id = "GRID", label = "📦 Grid System" },
+    },
+    active = "WELCOME",  -- Initial active tab
   },
 
-  -- Main draw function (NOT render!)
+  -- Main draw function (receives ctx and shell_state)
   draw = draw,
 
   -- CRITICAL: Pass the style to get ARKITEKT colors/styling
   style = style_ok and Style or nil,
 
-  -- Optional: Show icon in titlebar
-  show_icon = true,
+  -- Content padding around the main content area
+  content_padding = 16,
 })
 
 -- ============================================================================
@@ -154,17 +166,19 @@ WHAT YOU CAN LEARN FROM THIS DEMO:
    Every ARKITEKT app uses the same bootstrap pattern to locate and
    initialize the framework. Copy this pattern for your own apps.
 
-2. **State Management**
+2. **Menutabs System**
+   This demo uses Shell-level menutabs for navigation between sections.
+   See Shell.run({ tabs = {...} }) configuration above.
+   Access active tab via shell_state.window:get_active_tab().
+
+3. **State Management**
    See Demo/core/state.lua for how to structure application state.
    Keep state separate from UI for maintainability.
 
-3. **Modular UI**
+4. **Modular Views**
    See Demo/ui/ for how to split UI into logical view modules.
    Each view is self-contained and receives state as a parameter.
-
-4. **Panel & Tabs**
-   See Demo/ui/main_gui.lua for how to use Panel with tabs for
-   multi-section applications.
+   Views are switched based on active tab in the draw function.
 
 5. **Primitives**
    See Demo/ui/primitives_view.lua for button, checkbox, text,
@@ -177,13 +191,13 @@ WHAT YOU CAN LEARN FROM THIS DEMO:
 NEXT STEPS:
 
 - Explore the code in Demo/ folder
-- Read the inline documentation
+- Read the inline documentation and tooltips
 - Experiment by modifying the demo
 - Use these patterns in your own REAPER scripts
 
-For more information:
-- GitHub: [Your repo URL]
-- Forum: [Your forum thread]
-- Documentation: [Your docs]
+For more information about ARKITEKT:
+- Study the rearkitekt/ library modules
+- Check scripts/ folder for real-world examples
+- Read Widget documentation in source files
 
 ]]
