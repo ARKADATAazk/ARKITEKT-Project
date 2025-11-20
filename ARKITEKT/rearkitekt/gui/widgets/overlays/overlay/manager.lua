@@ -249,25 +249,12 @@ function M:render(ctx, dt)
   local x, y, w, h
 
   if top.use_viewport then
-    -- Use JS API to get actual REAPER window dimensions if available
-    if JS_API_available then
-      local hwnd = reaper.GetMainHwnd()
-      local retval, left, top_y, right, bottom = reaper.JS_Window_GetRect(hwnd)
-      if retval then
-        x, y = left, top_y
-        w, h = right - left, bottom - top_y
-      else
-        -- Fallback to viewport
-        local viewport = ImGui.GetMainViewport(ctx)
-        x, y = ImGui.Viewport_GetPos(viewport)
-        w, h = ImGui.Viewport_GetSize(viewport)
-      end
-    else
-      -- No JS API, use viewport (won't cover menu/titlebar)
-      local viewport = ImGui.GetMainViewport(ctx)
-      x, y = ImGui.Viewport_GetPos(viewport)
-      w, h = ImGui.Viewport_GetSize(viewport)
-    end
+    -- Always use viewport for positioning to ensure multi-monitor compatibility
+    -- The viewport correctly handles monitor offsets, while JS_Window_GetRect
+    -- returns absolute screen coordinates that don't work with ImGui on secondary monitors
+    local viewport = ImGui.GetMainViewport(ctx)
+    x, y = ImGui.Viewport_GetPos(viewport)
+    w, h = ImGui.Viewport_GetSize(viewport)
   else
     -- Use parent window bounds with UI offset adjustments
     local parent_x, parent_y = ImGui.GetWindowPos(ctx)
