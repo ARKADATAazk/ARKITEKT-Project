@@ -250,10 +250,10 @@ function M:render(ctx, dt)
 
   if top.use_viewport then
     -- Always use viewport for positioning to ensure multi-monitor compatibility
-    -- The viewport correctly handles monitor offsets, while JS_Window_GetRect
-    -- returns absolute screen coordinates that don't work with ImGui on secondary monitors
+    -- Position at (0, 0) relative to viewport - the viewport already represents
+    -- the correct monitor context, so we don't need to offset by its absolute position
     local viewport = ImGui.GetMainViewport(ctx)
-    x, y = ImGui.Viewport_GetPos(viewport)
+    x, y = 0, 0
     w, h = ImGui.Viewport_GetSize(viewport)
   else
     -- Use parent window bounds with UI offset adjustments
