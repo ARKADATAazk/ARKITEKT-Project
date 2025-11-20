@@ -59,7 +59,8 @@ local function draw_code_snippet(ctx, code)
   -- Background
   local cursor_x, cursor_y = ImGui.GetCursorScreenPos(ctx)
   local avail_w = ImGui.GetContentRegionAvail(ctx)
-  local text_h = ImGui.GetTextLineHeightWithSpacing(ctx) * (#code:gsub("[^\n]", ""):len() + 1)
+  local _, newline_count = code:gsub("\n", "\n")
+  local text_h = ImGui.GetTextLineHeightWithSpacing(ctx) * (newline_count + 1)
   local padding = 8
 
   local dl = ImGui.GetWindowDrawList(ctx)
