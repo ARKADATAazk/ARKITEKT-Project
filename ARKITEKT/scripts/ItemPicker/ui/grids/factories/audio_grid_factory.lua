@@ -559,12 +559,12 @@ function M.create(ctx, config, state, visualization, animator)
     end,
 
     -- Double-click: start rename
-    double_click = function(grid, uuid)
+    double_click = function(grid, key)
       local items = get_items()
       for _, item_data in ipairs(items) do
-        if item_data.uuid == uuid then
+        if item_data.uuid == key then
           state.rename_active = true
-          state.rename_uuid = uuid
+          state.rename_uuid = key
           state.rename_text = item_data.name
           state.rename_is_audio = true
           state.rename_focused = false  -- Reset focus flag
