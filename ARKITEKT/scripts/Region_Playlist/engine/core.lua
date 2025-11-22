@@ -99,6 +99,10 @@ function Engine:play()
   return self.transport:play()
 end
 
+function Engine:pause()
+  return self.transport:pause()
+end
+
 function Engine:stop()
   return self.transport:stop()
 end

@@ -274,6 +274,11 @@ function M.create(opts)
     return self.engine:play()
   end
 
+  function bridge:pause()
+    -- Keep playing_playlist_id when pausing (for resume)
+    return self.engine:pause()
+  end
+
   function bridge:stop()
     -- Clear the playing playlist ID when stopping
     -- This allows the sequence to be rebuilt for a different playlist on next play

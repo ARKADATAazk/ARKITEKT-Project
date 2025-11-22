@@ -139,8 +139,11 @@ function Transport:play()
 
   self:_enter_playlist_mode_if_needed()
 
-  -- Detect pause/resume: if we're not playing but have valid playlist state, we're resuming
-  local is_resuming = not _is_playing(self.proj) and not self.is_playing and self.state.playlist_pointer > 0
+  -- Detect pause/resume: if indices are still valid (not -1), we're resuming from pause
+  -- After stop(), current_idx = -1. After pause(), indices stay where they were.
+  local is_resuming = not _is_playing(self.proj) and
+                      not self.is_playing and
+                      (self.state.current_idx ~= -1 or self.state.next_idx ~= -1)
 
   if _is_playing(self.proj) then
     local region_num = region.rid
@@ -162,6 +165,14 @@ function Transport:play()
   self.state:update_bounds()
 
   return true
+end
+
+function Transport:pause()
+  -- Pause without resetting playlist position (for resume)
+  reaper.OnStopButton()
+  self.is_playing = false
+  -- Don't reset current_idx, next_idx, or playlist_pointer - keep for resume
+  -- Don't leave playlist mode - we might resume
 end
 
 function Transport:stop()

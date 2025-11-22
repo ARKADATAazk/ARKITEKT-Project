@@ -108,7 +108,7 @@ function TransportView:build_play_button(bridge_state)
         local bridge = self.state.get_bridge()
         local is_playing = bridge:get_state().is_playing
         if is_playing then
-          bridge:stop()
+          bridge:pause()  -- Use pause instead of stop to preserve playlist position
           if self.container then
             self.container:cancel_jump_flash()
           end
