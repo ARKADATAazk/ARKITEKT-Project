@@ -109,17 +109,21 @@ function M.GetItemWaveform(cache, item, uuid)
   local ret_tab
   if channels == 2 then
     local tab = buf.table()
+    local tab_len = #tab
     ret_tab = {}
-    for i = 1, #tab - 1, 2 do
+    local idx = 1
+    for i = 1, tab_len - 1, 2 do
       local val = utils.SampleLimit(tab[i]) + utils.SampleLimit(tab[i + 1])
-      table.insert(ret_tab, -val / 2)
+      ret_tab[idx] = -val / 2
+      idx = idx + 1
     end
   else
     -- Mono: clamp values to prevent waveform exceeding tile bounds
     local tab = buf.table()
+    local tab_len = #tab
     ret_tab = {}
-    for i = 1, #tab do
-      table.insert(ret_tab, utils.SampleLimit(tab[i]))
+    for i = 1, tab_len do
+      ret_tab[i] = utils.SampleLimit(tab[i])
     end
   end
 

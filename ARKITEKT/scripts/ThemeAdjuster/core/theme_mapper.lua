@@ -64,44 +64,57 @@ end
 function M.pretty_format_json(json_str)
   local indent = 0
   local result = {}
+  local idx = 1
   local in_string = false
   local escape_next = false
+  local str_len = #json_str
+  local sub = string.sub
+  local rep = string.rep
 
-  for i = 1, #json_str do
-    local char = json_str:sub(i, i)
+  for i = 1, str_len do
+    local char = sub(json_str, i, i)
 
     if escape_next then
-      table.insert(result, char)
+      result[idx] = char
+      idx = idx + 1
       escape_next = false
     elseif char == '\\' and in_string then
-      table.insert(result, char)
+      result[idx] = char
+      idx = idx + 1
       escape_next = true
     elseif char == '"' then
-      table.insert(result, char)
+      result[idx] = char
+      idx = idx + 1
       in_string = not in_string
     elseif not in_string then
       if char == '{' or char == '[' then
         indent = indent + 1
-        table.insert(result, char)
-        table.insert(result, '\n')
-        table.insert(result, string.rep('  ', indent))
+        result[idx] = char
+        result[idx + 1] = '\n'
+        result[idx + 2] = rep('  ', indent)
+        idx = idx + 3
       elseif char == '}' or char == ']' then
         indent = indent - 1
-        table.insert(result, '\n')
-        table.insert(result, string.rep('  ', indent))
-        table.insert(result, char)
+        result[idx] = '\n'
+        result[idx + 1] = rep('  ', indent)
+        result[idx + 2] = char
+        idx = idx + 3
       elseif char == ',' then
-        table.insert(result, char)
-        table.insert(result, '\n')
-        table.insert(result, string.rep('  ', indent))
+        result[idx] = char
+        result[idx + 1] = '\n'
+        result[idx + 2] = rep('  ', indent)
+        idx = idx + 3
       elseif char == ':' then
-        table.insert(result, char)
-        table.insert(result, ' ')
+        result[idx] = char
+        result[idx + 1] = ' '
+        idx = idx + 2
       elseif char ~= ' ' and char ~= '\n' and char ~= '\t' then
-        table.insert(result, char)
+        result[idx] = char
+        idx = idx + 1
       end
     else
-      table.insert(result, char)
+      result[idx] = char
+      idx = idx + 1
     end
   end
 
