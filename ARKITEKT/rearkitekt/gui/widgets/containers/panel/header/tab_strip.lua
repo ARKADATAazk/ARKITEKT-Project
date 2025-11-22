@@ -771,7 +771,8 @@ local function draw_tab(ctx, dl, tab_data, is_active, tab_index, x, y, width, he
       icon_font_size = config.icon_font_size or 12,
       on_select = function(color_int, color_hex, color_name)
         if config.on_tab_color_change then
-          config.on_tab_color_change(id, color_int or false)
+          -- When removing color, use lightgrey instead of nil to keep chip visible
+          config.on_tab_color_change(id, color_int or hexrgb("#888888"))
         end
       end,
     })

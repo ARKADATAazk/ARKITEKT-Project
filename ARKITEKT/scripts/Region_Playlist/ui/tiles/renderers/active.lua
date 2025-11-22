@@ -184,7 +184,7 @@ function M.render_playlist(ctx, rect, item, state, animator, on_repeat_cycle, ho
   local playlist_data = {
     name = playlist.name or item.playlist_name or "Unknown Playlist",
     item_count = playlist.items and #playlist.items or item.playlist_item_count or 0,
-    chip_color = playlist.chip_color or item.chip_color or hexrgb("#FF5733"),
+    chip_color = playlist.chip_color or item.chip_color or hexrgb("#888888"),
     total_duration = total_duration
   }
 

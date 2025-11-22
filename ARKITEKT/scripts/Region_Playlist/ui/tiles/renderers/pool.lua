@@ -159,7 +159,7 @@ function M.render_playlist(ctx, rect, playlist, state, animator, hover_config, t
   local base_color = M.CONFIG.playlist_tile.base_color
   local playlist_data = {
     name = playlist.name or "Unnamed Playlist",
-    chip_color = playlist.chip_color or Colors.hexrgb("#FF5733"),
+    chip_color = playlist.chip_color or Colors.hexrgb("#888888"),
     total_duration = playlist.total_duration or 0
   }
 
