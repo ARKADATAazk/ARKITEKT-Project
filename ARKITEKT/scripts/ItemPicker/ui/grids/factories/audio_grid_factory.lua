@@ -559,7 +559,7 @@ function M.create(ctx, config, state, visualization, animator)
     end,
 
     -- Double-click: start rename
-    double_click = function(uuid)
+    double_click = function(grid, uuid)
       local items = get_items()
       for _, item_data in ipairs(items) do
         if item_data.uuid == uuid then
