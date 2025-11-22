@@ -7,6 +7,79 @@ local M = {}
 local EXTNAME = "ARK_ItemPicker"
 local SETTINGS_KEY = "settings"
 
+-- Safe deserializer that doesn't use load() to prevent code injection
+-- Only supports the specific format we serialize: {[key]=value,...}
+local function safe_deserialize(str)
+  if not str or str == "" then return nil end
+
+  -- Validate it looks like a table literal
+  local trimmed = str:match("^%s*(.-)%s*$")
+  if not trimmed:match("^{.*}$") then return nil end
+
+  local result = {}
+
+  -- Extract key-value pairs from the table literal
+  -- Matches patterns like: ["key"]=value or [key]=value
+  for key, value in trimmed:gmatch('%[([^%]]+)%]%s*=%s*([^,}]+)') do
+    -- Parse key (remove quotes if string key)
+    local parsed_key = key:match('^"(.-)"$') or key:match("^'(.-)'$") or key
+
+    -- Parse value
+    local parsed_value
+    local trimmed_value = value:match("^%s*(.-)%s*$")
+
+    if trimmed_value == "true" then
+      parsed_value = true
+    elseif trimmed_value == "false" then
+      parsed_value = false
+    elseif trimmed_value == "nil" then
+      parsed_value = nil
+    elseif trimmed_value:match("^%-?%d+%.?%d*$") then
+      parsed_value = tonumber(trimmed_value)
+    elseif trimmed_value:match('^".-"$') then
+      -- String value - unescape basic escapes
+      parsed_value = trimmed_value:match('^"(.-)"$')
+      parsed_value = parsed_value:gsub('\\"', '"'):gsub('\\n', '\n'):gsub('\\\\', '\\')
+    else
+      parsed_value = trimmed_value
+    end
+
+    result[parsed_key] = parsed_value
+  end
+
+  return result
+end
+
+-- Safe deserializer for nested tables (audio/midi structure)
+local function safe_deserialize_nested(str)
+  if not str or str == "" then return nil end
+
+  local trimmed = str:match("^%s*(.-)%s*$")
+  if not trimmed:match("^{.*}$") then return nil end
+
+  local result = { audio = {}, midi = {} }
+
+  -- Find audio={...} section
+  local audio_content = trimmed:match('audio%s*=%s*{([^}]*)}')
+  if audio_content then
+    for key in audio_content:gmatch('%[([^%]]+)%]%s*=%s*true') do
+      local parsed_key = key:match('^"(.-)"$') or key:match("^'(.-)'$") or key
+      result.audio[parsed_key] = true
+    end
+  end
+
+  -- Find midi={...} section
+  local midi_content = trimmed:match('midi%s*=%s*{([^}]*)}')
+  if midi_content then
+    for key in midi_content:gmatch('%[([^%]]+)%]%s*=%s*true') do
+      local parsed_key = key:match('^"(.-)"$') or key:match("^'(.-)'$") or key
+      result.midi[parsed_key] = true
+    end
+  end
+
+  return result
+end
+
 -- Default settings
 local function get_default_settings()
   return {
@@ -46,8 +119,8 @@ function M.load_settings()
     return get_default_settings()
   end
 
-  local success, settings = pcall(load("return " .. state_str))
-  if not success or type(settings) ~= "table" then
+  local settings = safe_deserialize(state_str)
+  if not settings or type(settings) ~= "table" then
     return get_default_settings()
   end
 
@@ -106,8 +179,8 @@ function M.load_disabled_items()
     return { audio = {}, midi = {} }
   end
 
-  local success, disabled = pcall(load("return " .. state_str))
-  if not success or type(disabled) ~= "table" then
+  local disabled = safe_deserialize_nested(state_str)
+  if not disabled or type(disabled) ~= "table" then
     return { audio = {}, midi = {} }
   end
 
@@ -144,8 +217,8 @@ function M.load_favorites()
     return { audio = {}, midi = {} }
   end
 
-  local success, favorites = pcall(load("return " .. state_str))
-  if not success or type(favorites) ~= "table" then
+  local favorites = safe_deserialize_nested(state_str)
+  if not favorites or type(favorites) ~= "table" then
     return { audio = {}, midi = {} }
   end
 

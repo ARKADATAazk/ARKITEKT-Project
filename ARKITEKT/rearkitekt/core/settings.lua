@@ -10,10 +10,9 @@ Settings.__index = Settings
 local function ensure_dir(path)
   if reaper and reaper.RecursiveCreateDirectory then
     reaper.RecursiveCreateDirectory(path, 0)
-  else
-    -- naive fallback: try creating leaf
-    os.execute((SEP=="\\") and ('mkdir "'..path..'"') or ('mkdir -p "'..path..'"'))
   end
+  -- Note: No fallback - REAPER's RecursiveCreateDirectory is always available
+  -- and using os.execute with paths is a security risk
 end
 
 local function read_file(p)

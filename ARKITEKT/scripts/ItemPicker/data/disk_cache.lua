@@ -65,12 +65,16 @@ local function serialize(t, indent)
   return result
 end
 
--- Deserialize Lua table from string
+-- Safe JSON-like deserializer for cache data
+-- Handles the specific format we serialize (nested tables with numbers, strings, hashes)
 local function deserialize(str)
   if not str or str == "" then return nil end
 
-  local func, err = load("return " .. str)
+  -- Use pcall with load but in a restricted environment that only allows data
+  -- This is safer than raw load() as it prevents access to dangerous functions
+  local func, err = load("return " .. str, "cache", "t", {})
   if not func then
+    reaper.ShowConsoleMsg("[ItemPicker Cache] Deserialize error: " .. (err or "unknown") .. "\n")
     return nil
   end
 
@@ -78,6 +82,7 @@ local function deserialize(str)
   if success then
     return result
   end
+  reaper.ShowConsoleMsg("[ItemPicker Cache] Deserialize pcall failed\n")
   return nil
 end
 

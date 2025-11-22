@@ -54,18 +54,20 @@ end
 
 function M.TrackIsFrozen(track, track_chunks)
   local chunk = track_chunks[M.GetTrackID(track)]
-  return chunk:find("<FREEZE")
+  if not chunk then return false end
+  return chunk:find("<FREEZE") ~= nil
 end
 
 function M.IsParentFrozen(track, track_chunks)
   local getParentTrack = reaper.GetParentTrack
   local parentTrack = getParentTrack(track)
   while parentTrack do
-    if M.TrackIsFrozen(track, track_chunks) then
+    if M.TrackIsFrozen(parentTrack, track_chunks) then
       return true
     end
     parentTrack = getParentTrack(parentTrack)
   end
+  return false
 end
 
 function M.IsParentMuted(track)

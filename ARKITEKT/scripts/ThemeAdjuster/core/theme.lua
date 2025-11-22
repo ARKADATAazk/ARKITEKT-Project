@@ -51,7 +51,24 @@ end
 
 local function try_run(cmd) local r=os.execute(cmd); return r==true or r==0 end
 
+-- Validate path contains only safe characters to prevent command injection
+local function is_safe_path(path)
+  if not path then return false end
+  -- Allow alphanumeric, spaces, underscores, hyphens, dots, slashes, colons (for drive letters)
+  -- Reject shell metacharacters: $`|;&<>(){}[]!#*?\n\r
+  if path:match('[%$`|;&<>%(%){}%[%]!#%*%?%c]') then
+    return false
+  end
+  return true
+end
+
 local function unzip(zip_path, dest_dir)
+  -- Validate paths before using in shell commands
+  if not is_safe_path(zip_path) or not is_safe_path(dest_dir) then
+    reaper.ShowConsoleMsg("[ThemeAdjuster] Error: Invalid characters in path\n")
+    return false
+  end
+
   reaper.RecursiveCreateDirectory(dest_dir, 0)
   local osname = reaper.GetOS() or ""
   if osname:find("Win") then
