@@ -336,7 +336,7 @@ function LayoutView:render(ctx, title_font, title_font_size, title, screen_w, sc
   -- Draw slider fill
   local quality = self.state.settings.waveform_quality or 1.0
   local fill_width = slider_width * quality
-  local fill_color = Colors.with_alpha(Colors.hexrgb("#4A9EFF"), math.floor(ui_fade * 200))
+  local fill_color = Colors.with_alpha(Colors.hexrgb("#4A9EFF"), math.floor(ui_fade * 255))
   if fill_width > 1 then
     ImGui.DrawList_AddRectFilled(draw_list, track_x, track_y, track_x + fill_width, track_y + track_h, fill_color, track_rounding)
   end

@@ -9,7 +9,7 @@ local M = {}
 
 M.DEFAULT = {
   -- Fill layer
-  fill_opacity = 0.8,
+  fill_opacity = 0.4,
   fill_saturation = 0.4,
   fill_brightness = 0.5,
   
