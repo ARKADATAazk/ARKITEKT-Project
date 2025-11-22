@@ -283,6 +283,8 @@ function M.create(opts)
     -- Clear the playing playlist ID when stopping
     -- This allows the sequence to be rebuilt for a different playlist on next play
     self._playing_playlist_id = nil
+    -- Clear the last known position so rebuild_sequence doesn't restore it
+    self._last_known_item_key = nil
     return self.engine:stop()
   end
 
