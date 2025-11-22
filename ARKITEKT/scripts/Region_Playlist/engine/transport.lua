@@ -139,19 +139,28 @@ function Transport:play()
 
   self:_enter_playlist_mode_if_needed()
 
+  -- Detect pause/resume: if we're not playing but have valid playlist state, we're resuming
+  local is_resuming = not _is_playing(self.proj) and not self.is_playing and self.state.playlist_pointer > 0
+
   if _is_playing(self.proj) then
     local region_num = region.rid
     self:_seek_to_region(region_num)
   else
-    reaper.SetEditCurPos2(self.proj, region.start, false, false)
-    reaper.OnPlayButton()
+    if is_resuming then
+      -- Resuming from pause - just unpause without seeking
+      reaper.OnPlayButton()
+    else
+      -- Starting fresh - seek to region start and reset indices
+      reaper.SetEditCurPos2(self.proj, region.start, false, false)
+      reaper.OnPlayButton()
+      self.state.current_idx = -1
+      self.state.next_idx = self.state.playlist_pointer
+    end
   end
 
   self.is_playing = true
-  self.state.current_idx = -1
-  self.state.next_idx = self.state.playlist_pointer
   self.state:update_bounds()
-  
+
   return true
 end
 
@@ -160,6 +169,7 @@ function Transport:stop()
   self.is_playing = false
   self.state.current_idx = -1
   self.state.next_idx = -1
+  self.state.playlist_pointer = 1  -- Reset to beginning for next play
   self:_leave_playlist_mode_if_needed()
 end
 
@@ -317,6 +327,8 @@ function Transport:check_stopped()
       self.is_playing = false
       self.state.current_idx = -1
       self.state.next_idx = -1
+      -- Don't reset playlist_pointer here - user might be pausing to resume later
+      -- Only reset when user explicitly presses Stop button
       self:_leave_playlist_mode_if_needed()
       return true
     end
