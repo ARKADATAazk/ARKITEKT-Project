@@ -165,7 +165,8 @@ function M.draw_active_target(ctx, rect, border_color, fill_color, glow_color)
   fill_color = fill_color or M.COLORS.ACTIVE_FILL
   glow_color = glow_color or M.COLORS.GLOW_COLOR
 
-  local dl = ImGui.GetWindowDrawList(ctx)
+  -- Use foreground draw list so glow appears on top of everything
+  local dl = ImGui.GetForegroundDrawList(ctx)
   local x1, y1, x2, y2 = rect[1], rect[2], rect[3], rect[4]
 
   -- Extract RGB from glow color for alpha manipulation
@@ -173,22 +174,22 @@ function M.draw_active_target(ctx, rect, border_color, fill_color, glow_color)
 
   -- Draw glow layers (outer to inner)
   local glow_layers = {
-    { expand = 6, alpha = 0x18 },  -- Outermost, very faint
-    { expand = 4, alpha = 0x30 },  -- Middle
-    { expand = 2, alpha = 0x50 },  -- Inner glow
+    { expand = 8, alpha = 0x20 },   -- Outermost, very faint
+    { expand = 5, alpha = 0x40 },   -- Middle
+    { expand = 3, alpha = 0x60 },   -- Inner glow
   }
 
   for _, layer in ipairs(glow_layers) do
     local e = layer.expand
     local glow = Colors.components_to_rgba(gr, gg, gb, layer.alpha)
-    ImGui.DrawList_AddRect(dl, x1 - e, y1 - e, x2 + e, y2 + e, glow, 6, 0, 2)
+    ImGui.DrawList_AddRectFilled(dl, x1 - e, y1 - e, x2 + e, y2 + e, glow, 6)
   end
 
   -- Fill
   ImGui.DrawList_AddRectFilled(dl, x1, y1, x2, y2, fill_color, 4)
 
   -- Main border (brightest)
-  ImGui.DrawList_AddRect(dl, x1, y1, x2, y2, border_color, 4, 0, 2)
+  ImGui.DrawList_AddRect(dl, x1, y1, x2, y2, border_color, 4, 0, 2.5)
 end
 
 -- Legacy function for backward compatibility
