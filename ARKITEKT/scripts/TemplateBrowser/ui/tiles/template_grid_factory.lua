@@ -70,7 +70,8 @@ function M.create(get_templates, metadata, animator, get_tile_width, get_view_mo
             DragDrop.draw_active_target(ctx, rect)
           end
 
-          local payload = DragDrop.accept_drop(ctx, Constants.DRAG_TYPES.TAG)
+          -- Accept drop with no default rect (we draw our own)
+          local payload = DragDrop.accept_drop(ctx, Constants.DRAG_TYPES.TAG, DragDrop.FLAGS.ACCEPT_NO_HIGHLIGHT)
           if payload then
             -- Apply tag to template
             on_tag_drop(template, payload)
