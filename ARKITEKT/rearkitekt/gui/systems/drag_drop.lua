@@ -23,8 +23,9 @@ M.FLAGS = {
 -- Default colors for drop indicators
 M.COLORS = {
   POTENTIAL_TARGET = Colors.hexrgb("#5588FF44"),  -- Subtle highlight for all potential targets
-  ACTIVE_TARGET = Colors.hexrgb("#5588FFAA"),     -- Brighter when hovering
-  ACTIVE_FILL = Colors.hexrgb("#5588FF22"),       -- Fill for active target
+  ACTIVE_TARGET = Colors.hexrgb("#5588FFCC"),     -- Brighter when hovering
+  ACTIVE_FILL = Colors.hexrgb("#5588FF18"),       -- Fill for active target
+  GLOW_COLOR = Colors.hexrgb("#5588FF"),          -- Base glow color
 }
 
 -- Track active drag type globally
@@ -158,17 +159,35 @@ function M.draw_potential_target(ctx, rect, color)
 end
 
 -- Draw highlight for an active drop target (shown when hovering a valid target)
-function M.draw_active_target(ctx, rect, border_color, fill_color)
+-- Includes a multi-layer glow effect
+function M.draw_active_target(ctx, rect, border_color, fill_color, glow_color)
   border_color = border_color or M.COLORS.ACTIVE_TARGET
   fill_color = fill_color or M.COLORS.ACTIVE_FILL
+  glow_color = glow_color or M.COLORS.GLOW_COLOR
 
   local dl = ImGui.GetWindowDrawList(ctx)
   local x1, y1, x2, y2 = rect[1], rect[2], rect[3], rect[4]
 
+  -- Extract RGB from glow color for alpha manipulation
+  local gr, gg, gb = Colors.rgba_to_components(glow_color)
+
+  -- Draw glow layers (outer to inner)
+  local glow_layers = {
+    { expand = 6, alpha = 0x18 },  -- Outermost, very faint
+    { expand = 4, alpha = 0x30 },  -- Middle
+    { expand = 2, alpha = 0x50 },  -- Inner glow
+  }
+
+  for _, layer in ipairs(glow_layers) do
+    local e = layer.expand
+    local glow = Colors.components_to_rgba(gr, gg, gb, layer.alpha)
+    ImGui.DrawList_AddRect(dl, x1 - e, y1 - e, x2 + e, y2 + e, glow, 6, 0, 2)
+  end
+
   -- Fill
   ImGui.DrawList_AddRectFilled(dl, x1, y1, x2, y2, fill_color, 4)
 
-  -- Border
+  -- Main border (brightest)
   ImGui.DrawList_AddRect(dl, x1, y1, x2, y2, border_color, 4, 0, 2)
 end
 
