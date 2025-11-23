@@ -49,6 +49,14 @@ function M.create(get_templates, metadata, animator, get_tile_width, get_view_mo
 
       -- Handle drop targets for tags
       if on_tag_drop then
+        -- Check if a tag is being dragged (globally)
+        local is_tag_dragging = DragDrop.get_active_drag_type() == Constants.DRAG_TYPES.TAG
+
+        -- Draw potential target indicator on all tiles while dragging a tag
+        if is_tag_dragging then
+          DragDrop.draw_potential_target(ctx, rect)
+        end
+
         -- Create invisible button for drop target
         ImGui.SetCursorScreenPos(ctx, rect[1], rect[2])
         ImGui.InvisibleButton(ctx, "##tile_drop_" .. template.uuid, rect[3] - rect[1], rect[4] - rect[2])

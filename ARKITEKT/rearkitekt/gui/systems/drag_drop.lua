@@ -27,6 +27,24 @@ M.COLORS = {
   ACTIVE_FILL = Colors.hexrgb("#5588FF22"),       -- Fill for active target
 }
 
+-- Track active drag type globally
+M._active_drag_type = nil
+
+-- Set the active drag type (call when drag starts)
+function M.set_active_drag_type(drag_type)
+  M._active_drag_type = drag_type
+end
+
+-- Get the current active drag type
+function M.get_active_drag_type()
+  return M._active_drag_type
+end
+
+-- Clear the active drag type (call when drag ends)
+function M.clear_active_drag_type()
+  M._active_drag_type = nil
+end
+
 -- Begin a drag source on the last item
 -- Returns true if drag is active
 function M.begin_source(ctx, payload_type, payload_data, flags)
