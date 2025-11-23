@@ -61,6 +61,9 @@ function M.create(get_templates, metadata, animator, get_tile_width, get_view_mo
         ImGui.SetCursorScreenPos(ctx, rect[1], rect[2])
         ImGui.InvisibleButton(ctx, "##tile_drop_" .. template.uuid, rect[3] - rect[1], rect[4] - rect[2])
 
+        -- Make default drop target transparent so our glow shows
+        ImGui.PushStyleColor(ctx, ImGui.Col_DragDropTarget, Colors.hexrgb("#00000000"))
+
         if ImGui.BeginDragDropTarget(ctx) then
           -- Check if a tag is being dragged (peek without accepting)
           local tag_payload = DragDrop.peek_payload(ctx, Constants.DRAG_TYPES.TAG)
@@ -70,14 +73,16 @@ function M.create(get_templates, metadata, animator, get_tile_width, get_view_mo
             DragDrop.draw_active_target(ctx, rect)
           end
 
-          -- Accept drop with no default rect (we draw our own)
-          local payload = DragDrop.accept_drop(ctx, Constants.DRAG_TYPES.TAG, DragDrop.FLAGS.ACCEPT_NO_HIGHLIGHT)
+          -- Accept drop
+          local payload = DragDrop.accept_drop(ctx, Constants.DRAG_TYPES.TAG)
           if payload then
             -- Apply tag to template
             on_tag_drop(template, payload)
           end
           ImGui.EndDragDropTarget(ctx)
         end
+
+        ImGui.PopStyleColor(ctx)
       end
     end,
 
