@@ -1,5 +1,5 @@
 -- @noindex
--- ReArkitekt/app/hub.lua
+-- Arkitekt/app/hub.lua
 -- Embedded hub for launching apps and managing settings
 
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua;' .. package.path

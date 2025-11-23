@@ -1,8 +1,8 @@
 -- @noindex
--- ReArkitekt/ColorPalette/app/controller.lua
+-- Arkitekt/ColorPalette/app/controller.lua
 -- Handles color application to REAPER targets
 
-local Colors = require('rearkitekt.core.colors')
+local Colors = require('arkitekt.core.colors')
 local hexrgb = Colors.hexrgb
 
 local M = {}

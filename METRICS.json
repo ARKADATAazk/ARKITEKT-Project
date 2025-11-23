@@ -16,7 +16,7 @@
     "average_complexity": 15,
     "largest_files": [
       {
-        "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/tab_strip.lua",
+        "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/tab_strip.lua",
         "lines": 804
       },
       {
@@ -24,7 +24,7 @@
         "lines": 631
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/widgets/grid/core.lua",
+        "path": "ARKITEKT/arkitekt/gui/widgets/grid/core.lua",
         "lines": 569
       },
       {
@@ -36,15 +36,15 @@
         "lines": 554
       },
       {
-        "path": "ARKITEKT/rearkitekt/core/colors.lua",
+        "path": "ARKITEKT/arkitekt/core/colors.lua",
         "lines": 550
       },
       {
-        "path": "ARKITEKT/rearkitekt/app/titlebar.lua",
+        "path": "ARKITEKT/arkitekt/app/titlebar.lua",
         "lines": 507
       },
       {
-        "path": "ARKITEKT/rearkitekt/app/window.lua",
+        "path": "ARKITEKT/arkitekt/app/window.lua",
         "lines": 481
       },
       {
@@ -62,7 +62,7 @@
         "score": 85
       },
       {
-        "path": "ARKITEKT/rearkitekt/core/colors.lua",
+        "path": "ARKITEKT/arkitekt/core/colors.lua",
         "score": 79
       },
       {
@@ -70,7 +70,7 @@
         "score": 62
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/widgets/grid/core.lua",
+        "path": "ARKITEKT/arkitekt/gui/widgets/grid/core.lua",
         "score": 52
       },
       {
@@ -90,25 +90,25 @@
         "score": 37
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/fx/easing.lua",
+        "path": "ARKITEKT/arkitekt/gui/fx/easing.lua",
         "score": 34
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/widgets/panel/init.lua",
+        "path": "ARKITEKT/arkitekt/gui/widgets/panel/init.lua",
         "score": 34
       }
     ],
     "most_imported_files": [
       {
-        "path": "ARKITEKT/rearkitekt/core/colors.lua",
+        "path": "ARKITEKT/arkitekt/core/colors.lua",
         "import_count": 25
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/draw.lua",
+        "path": "ARKITEKT/arkitekt/gui/draw.lua",
         "import_count": 18
       },
       {
-        "path": "ARKITEKT/rearkitekt/app/shell.lua",
+        "path": "ARKITEKT/arkitekt/app/shell.lua",
         "import_count": 8
       },
       {
@@ -116,19 +116,19 @@
         "import_count": 6
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/fx/tile_fx_config.lua",
+        "path": "ARKITEKT/arkitekt/gui/fx/tile_fx_config.lua",
         "import_count": 5
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/widgets/component/chip.lua",
+        "path": "ARKITEKT/arkitekt/gui/widgets/component/chip.lua",
         "import_count": 5
       },
       {
-        "path": "ARKITEKT/rearkitekt/core/json.lua",
+        "path": "ARKITEKT/arkitekt/core/json.lua",
         "import_count": 4
       },
       {
-        "path": "ARKITEKT/rearkitekt/gui/fx/tile_motion.lua",
+        "path": "ARKITEKT/arkitekt/gui/fx/tile_motion.lua",
         "import_count": 4
       },
       {
@@ -136,19 +136,19 @@
         "import_count": 4
       },
       {
-        "path": "ARKITEKT/rearkitekt/core/events.lua",
+        "path": "ARKITEKT/arkitekt/core/events.lua",
         "import_count": 3
       }
     ],
     "isolated_files": [
-      "ARKITEKT/rearkitekt/app/config.lua",
-      "ARKITEKT/rearkitekt/app/icon.lua",
-      "ARKITEKT/rearkitekt/app/titlebar.lua",
-      "ARKITEKT/rearkitekt/core/lifecycle.lua",
-      "ARKITEKT/rearkitekt/gui/images.lua",
-      "ARKITEKT/rearkitekt/gui/systems/reorder.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/navigation/menutabs.lua",
-      "ARKITEKT/rearkitekt/reaper/timing.lua",
+      "ARKITEKT/arkitekt/app/config.lua",
+      "ARKITEKT/arkitekt/app/icon.lua",
+      "ARKITEKT/arkitekt/app/titlebar.lua",
+      "ARKITEKT/arkitekt/core/lifecycle.lua",
+      "ARKITEKT/arkitekt/gui/images.lua",
+      "ARKITEKT/arkitekt/gui/systems/reorder.lua",
+      "ARKITEKT/arkitekt/gui/widgets/navigation/menutabs.lua",
+      "ARKITEKT/arkitekt/reaper/timing.lua",
       "ARKITEKT/scripts/Region_Playlist/core/keys.lua",
       "ARKITEKT/scripts/Region_Playlist/storage/migration.lua",
       "ARKITEKT/scripts/Region_Playlist/widgets/controls/controls_widget.lua"
@@ -182,7 +182,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/chrome/status_bar/config.lua",
+      "path": "ARKITEKT/arkitekt/app/chrome/status_bar/config.lua",
       "name": "config.lua",
       "lines": {
         "total": 140,
@@ -207,7 +207,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/chrome/status_bar/init.lua",
+      "path": "ARKITEKT/arkitekt/app/chrome/status_bar/init.lua",
       "name": "init.lua",
       "lines": {
         "total": 3,
@@ -229,7 +229,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/chrome/status_bar/widget.lua",
+      "path": "ARKITEKT/arkitekt/app/chrome/status_bar/widget.lua",
       "name": "widget.lua",
       "lines": {
         "total": 319,
@@ -256,7 +256,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/config.lua",
+      "path": "ARKITEKT/arkitekt/app/config.lua",
       "name": "config.lua",
       "lines": {
         "total": 95,
@@ -281,7 +281,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/hub.lua",
+      "path": "ARKITEKT/arkitekt/app/hub.lua",
       "name": "hub.lua",
       "lines": {
         "total": 93,
@@ -306,7 +306,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/icon.lua",
+      "path": "ARKITEKT/arkitekt/app/icon.lua",
       "name": "icon.lua",
       "lines": {
         "total": 124,
@@ -330,7 +330,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/runtime.lua",
+      "path": "ARKITEKT/arkitekt/app/runtime.lua",
       "name": "runtime.lua",
       "lines": {
         "total": 69,
@@ -356,7 +356,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/shell.lua",
+      "path": "ARKITEKT/arkitekt/app/shell.lua",
       "name": "shell.lua",
       "lines": {
         "total": 289,
@@ -381,7 +381,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/titlebar.lua",
+      "path": "ARKITEKT/arkitekt/app/titlebar.lua",
       "name": "titlebar.lua",
       "lines": {
         "total": 507,
@@ -408,7 +408,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/app/window.lua",
+      "path": "ARKITEKT/arkitekt/app/window.lua",
       "name": "window.lua",
       "lines": {
         "total": 481,
@@ -435,7 +435,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/colors.lua",
+      "path": "ARKITEKT/arkitekt/core/colors.lua",
       "name": "colors.lua",
       "lines": {
         "total": 550,
@@ -459,7 +459,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/events.lua",
+      "path": "ARKITEKT/arkitekt/core/events.lua",
       "name": "events.lua",
       "lines": {
         "total": 67,
@@ -487,7 +487,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/json.lua",
+      "path": "ARKITEKT/arkitekt/core/json.lua",
       "name": "json.lua",
       "lines": {
         "total": 121,
@@ -514,7 +514,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/lifecycle.lua",
+      "path": "ARKITEKT/arkitekt/core/lifecycle.lua",
       "name": "lifecycle.lua",
       "lines": {
         "total": 81,
@@ -542,7 +542,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/math.lua",
+      "path": "ARKITEKT/arkitekt/core/math.lua",
       "name": "math.lua",
       "lines": {
         "total": 52,
@@ -566,7 +566,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/settings.lua",
+      "path": "ARKITEKT/arkitekt/core/settings.lua",
       "name": "settings.lua",
       "lines": {
         "total": 119,
@@ -595,7 +595,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/core/undo_manager.lua",
+      "path": "ARKITEKT/arkitekt/core/undo_manager.lua",
       "name": "undo_manager.lua",
       "lines": {
         "total": 70,
@@ -621,7 +621,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/draw.lua",
+      "path": "ARKITEKT/arkitekt/gui/draw.lua",
       "name": "draw.lua",
       "lines": {
         "total": 114,
@@ -645,7 +645,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/animation/rect_track.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/animation/rect_track.lua",
       "name": "rect_track.lua",
       "lines": {
         "total": 136,
@@ -673,7 +673,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/animation/track.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/animation/track.lua",
       "name": "track.lua",
       "lines": {
         "total": 53,
@@ -701,7 +701,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/animations/destroy.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/animations/destroy.lua",
       "name": "destroy.lua",
       "lines": {
         "total": 149,
@@ -730,7 +730,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/animations/spawn.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/animations/spawn.lua",
       "name": "spawn.lua",
       "lines": {
         "total": 58,
@@ -758,7 +758,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/dnd/config.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/dnd/config.lua",
       "name": "config.lua",
       "lines": {
         "total": 91,
@@ -782,7 +782,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/dnd/drag_indicator.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/dnd/drag_indicator.lua",
       "name": "drag_indicator.lua",
       "lines": {
         "total": 219,
@@ -806,7 +806,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/dnd/drop_indicator.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/dnd/drop_indicator.lua",
       "name": "drop_indicator.lua",
       "lines": {
         "total": 113,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/easing.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/easing.lua",
       "name": "easing.lua",
       "lines": {
         "total": 94,
@@ -854,7 +854,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/effects.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/effects.lua",
       "name": "effects.lua",
       "lines": {
         "total": 54,
@@ -878,7 +878,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/marching_ants.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/marching_ants.lua",
       "name": "marching_ants.lua",
       "lines": {
         "total": 100,
@@ -902,7 +902,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/tile_fx.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/tile_fx.lua",
       "name": "tile_fx.lua",
       "lines": {
         "total": 170,
@@ -926,7 +926,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/tile_fx_config.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/tile_fx_config.lua",
       "name": "tile_fx_config.lua",
       "lines": {
         "total": 79,
@@ -951,7 +951,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/fx/tile_motion.lua",
+      "path": "ARKITEKT/arkitekt/gui/fx/tile_motion.lua",
       "name": "tile_motion.lua",
       "lines": {
         "total": 58,
@@ -979,7 +979,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/images.lua",
+      "path": "ARKITEKT/arkitekt/gui/images.lua",
       "name": "images.lua",
       "lines": {
         "total": 285,
@@ -1007,7 +1007,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/style.lua",
+      "path": "ARKITEKT/arkitekt/gui/style.lua",
       "name": "style.lua",
       "lines": {
         "total": 146,
@@ -1031,7 +1031,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/height_stabilizer.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/height_stabilizer.lua",
       "name": "height_stabilizer.lua",
       "lines": {
         "total": 74,
@@ -1059,7 +1059,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/playback_manager.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/playback_manager.lua",
       "name": "playback_manager.lua",
       "lines": {
         "total": 22,
@@ -1083,7 +1083,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/reorder.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/reorder.lua",
       "name": "reorder.lua",
       "lines": {
         "total": 127,
@@ -1112,7 +1112,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/responsive_grid.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/responsive_grid.lua",
       "name": "responsive_grid.lua",
       "lines": {
         "total": 228,
@@ -1139,7 +1139,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/selection.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/selection.lua",
       "name": "selection.lua",
       "lines": {
         "total": 142,
@@ -1169,7 +1169,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/systems/tile_utilities.lua",
+      "path": "ARKITEKT/arkitekt/gui/systems/tile_utilities.lua",
       "name": "tile_utilities.lua",
       "lines": {
         "total": 49,
@@ -1193,7 +1193,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/chip_list/list.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/chip_list/list.lua",
       "name": "list.lua",
       "lines": {
         "total": 303,
@@ -1220,7 +1220,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/component/chip.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/component/chip.lua",
       "name": "chip.lua",
       "lines": {
         "total": 333,
@@ -1244,7 +1244,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/controls/context_menu.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/controls/context_menu.lua",
       "name": "context_menu.lua",
       "lines": {
         "total": 106,
@@ -1268,7 +1268,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/controls/dropdown.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/controls/dropdown.lua",
       "name": "dropdown.lua",
       "lines": {
         "total": 395,
@@ -1296,7 +1296,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/controls/scrollbar.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/controls/scrollbar.lua",
       "name": "scrollbar.lua",
       "lines": {
         "total": 239,
@@ -1324,7 +1324,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/controls/tooltip.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/controls/tooltip.lua",
       "name": "tooltip.lua",
       "lines": {
         "total": 129,
@@ -1348,7 +1348,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/displays/status_pad.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/displays/status_pad.lua",
       "name": "status_pad.lua",
       "lines": {
         "total": 192,
@@ -1377,7 +1377,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/animation.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/animation.lua",
       "name": "animation.lua",
       "lines": {
         "total": 101,
@@ -1405,7 +1405,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/core.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/core.lua",
       "name": "core.lua",
       "lines": {
         "total": 569,
@@ -1440,7 +1440,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/dnd_state.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/dnd_state.lua",
       "name": "dnd_state.lua",
       "lines": {
         "total": 113,
@@ -1468,7 +1468,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/drop_zones.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/drop_zones.lua",
       "name": "drop_zones.lua",
       "lines": {
         "total": 277,
@@ -1498,7 +1498,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/grid_bridge.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/grid_bridge.lua",
       "name": "grid_bridge.lua",
       "lines": {
         "total": 219,
@@ -1526,7 +1526,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/input.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/input.lua",
       "name": "input.lua",
       "lines": {
         "total": 237,
@@ -1553,7 +1553,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/layout.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/layout.lua",
       "name": "layout.lua",
       "lines": {
         "total": 101,
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/grid/rendering.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/grid/rendering.lua",
       "name": "rendering.lua",
       "lines": {
         "total": 92,
@@ -1602,7 +1602,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/navigation/menutabs.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/navigation/menutabs.lua",
       "name": "menutabs.lua",
       "lines": {
         "total": 269,
@@ -1631,7 +1631,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/overlay/config.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/overlay/config.lua",
       "name": "config.lua",
       "lines": {
         "total": 139,
@@ -1656,7 +1656,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/overlay/manager.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/overlay/manager.lua",
       "name": "manager.lua",
       "lines": {
         "total": 178,
@@ -1682,7 +1682,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/overlay/sheet.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/overlay/sheet.lua",
       "name": "sheet.lua",
       "lines": {
         "total": 125,
@@ -1706,7 +1706,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/package_tiles/grid.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/package_tiles/grid.lua",
       "name": "grid.lua",
       "lines": {
         "total": 227,
@@ -1732,7 +1732,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/package_tiles/micromanage.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/package_tiles/micromanage.lua",
       "name": "micromanage.lua",
       "lines": {
         "total": 127,
@@ -1756,7 +1756,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/package_tiles/renderer.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/package_tiles/renderer.lua",
       "name": "renderer.lua",
       "lines": {
         "total": 267,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/background.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/background.lua",
       "name": "background.lua",
       "lines": {
         "total": 61,
@@ -1804,7 +1804,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/config.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/config.lua",
       "name": "config.lua",
       "lines": {
         "total": 257,
@@ -1828,7 +1828,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/content.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/content.lua",
       "name": "content.lua",
       "lines": {
         "total": 44,
@@ -1852,7 +1852,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/button.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/button.lua",
       "name": "button.lua",
       "lines": {
         "total": 119,
@@ -1876,7 +1876,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/dropdown_field.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/dropdown_field.lua",
       "name": "dropdown_field.lua",
       "lines": {
         "total": 101,
@@ -1900,7 +1900,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/init.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/init.lua",
       "name": "init.lua",
       "lines": {
         "total": 46,
@@ -1924,7 +1924,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/layout.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/layout.lua",
       "name": "layout.lua",
       "lines": {
         "total": 305,
@@ -1951,7 +1951,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/search_field.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/search_field.lua",
       "name": "search_field.lua",
       "lines": {
         "total": 120,
@@ -1975,7 +1975,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/separator.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/separator.lua",
       "name": "separator.lua",
       "lines": {
         "total": 33,
@@ -1999,7 +1999,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/header/tab_strip.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/header/tab_strip.lua",
       "name": "tab_strip.lua",
       "lines": {
         "total": 804,
@@ -2025,7 +2025,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/init.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/init.lua",
       "name": "init.lua",
       "lines": {
         "total": 416,
@@ -2054,7 +2054,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/panel/tab_animator.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/panel/tab_animator.lua",
       "name": "tab_animator.lua",
       "lines": {
         "total": 107,
@@ -2084,7 +2084,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/selection_rectangle.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/selection_rectangle.lua",
       "name": "selection_rectangle.lua",
       "lines": {
         "total": 99,
@@ -2112,7 +2112,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/sliders/hue.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/sliders/hue.lua",
       "name": "hue.lua",
       "lines": {
         "total": 276,
@@ -2137,7 +2137,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/transport/transport_container.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/transport/transport_container.lua",
       "name": "transport_container.lua",
       "lines": {
         "total": 137,
@@ -2165,7 +2165,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/gui/widgets/transport/transport_fx.lua",
+      "path": "ARKITEKT/arkitekt/gui/widgets/transport/transport_fx.lua",
       "name": "transport_fx.lua",
       "lines": {
         "total": 107,
@@ -2189,7 +2189,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/patterns/controller.lua",
+      "path": "ARKITEKT/arkitekt/patterns/controller.lua",
       "name": "controller.lua",
       "lines": {
         "total": 25,
@@ -2215,7 +2215,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/reaper/regions.lua",
+      "path": "ARKITEKT/arkitekt/reaper/regions.lua",
       "name": "regions.lua",
       "lines": {
         "total": 83,
@@ -2240,7 +2240,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/reaper/timing.lua",
+      "path": "ARKITEKT/arkitekt/reaper/timing.lua",
       "name": "timing.lua",
       "lines": {
         "total": 113,
@@ -2264,7 +2264,7 @@
       }
     },
     {
-      "path": "ARKITEKT/rearkitekt/reaper/transport.lua",
+      "path": "ARKITEKT/arkitekt/reaper/transport.lua",
       "name": "transport.lua",
       "lines": {
         "total": 97,
@@ -3760,79 +3760,79 @@
       "ARKITEKT/scripts/demos/widget_demo.lua",
       "ARKITEKT/scripts/Region_Playlist/storage/settings.lua",
       "ARKITEKT/scripts/Region_Playlist/playlists/manager.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/header/init.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/header/init.lua",
       "ARKITEKT/scripts/Region_Playlist/ARK_RegionPlaylist.lua",
-      "ARKITEKT/rearkitekt/app/icon.lua",
+      "ARKITEKT/arkitekt/app/icon.lua",
       "ARKITEKT/scripts/Region_Playlist/engine/coordinator_bridge.lua",
-      "ARKITEKT/rearkitekt/reaper/timing.lua",
+      "ARKITEKT/arkitekt/reaper/timing.lua",
       "ARKITEKT/scripts/demos/demo.lua",
       "ARKITEKT/scripts/Region_Playlist/components/tiles/pool.lua",
       "ARKITEKT/scripts/Region_Playlist/components/tiles/active.lua",
       "ARKITEKT/scripts/ColorPalette/ARK_ColorPalette.lua",
       "ARKITEKT/ARKITEKT.lua",
-      "ARKITEKT/rearkitekt/gui/systems/reorder.lua",
+      "ARKITEKT/arkitekt/gui/systems/reorder.lua",
       "ARKITEKT/scripts/demos/demo_modal_overlay.lua",
-      "ARKITEKT/rearkitekt/gui/images.lua",
-      "ARKITEKT/rearkitekt/app/chrome/status_bar/init.lua",
+      "ARKITEKT/arkitekt/gui/images.lua",
+      "ARKITEKT/arkitekt/app/chrome/status_bar/init.lua",
       "ARKITEKT/scripts/Region_Playlist/storage/migration.lua",
-      "ARKITEKT/rearkitekt/app/titlebar.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/init.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/navigation/menutabs.lua",
+      "ARKITEKT/arkitekt/app/titlebar.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/init.lua",
+      "ARKITEKT/arkitekt/gui/widgets/navigation/menutabs.lua",
       "ARKITEKT/scripts/demos/demo2.lua",
       "ARKITEKT/scripts/Region_Playlist/core/colors.lua",
       "ARKITEKT/scripts/demos/demo3.lua",
-      "ARKITEKT/rearkitekt/core/lifecycle.lua",
+      "ARKITEKT/arkitekt/core/lifecycle.lua",
       "ARKITEKT/scripts/Region_Playlist/widgets/controls/controls_widget.lua",
       "ARKITEKT/scripts/Region_Playlist/core/keys.lua",
-      "ARKITEKT/rearkitekt/app/config.lua"
+      "ARKITEKT/arkitekt/app/config.lua"
     ],
     "pure_modules": [
-      "ARKITEKT/rearkitekt/app/config.lua",
-      "ARKITEKT/rearkitekt/app/hub.lua",
-      "ARKITEKT/rearkitekt/app/icon.lua",
-      "ARKITEKT/rearkitekt/app/runtime.lua",
-      "ARKITEKT/rearkitekt/app/titlebar.lua",
-      "ARKITEKT/rearkitekt/app/window.lua",
-      "ARKITEKT/rearkitekt/core/colors.lua",
-      "ARKITEKT/rearkitekt/core/events.lua",
-      "ARKITEKT/rearkitekt/core/json.lua",
-      "ARKITEKT/rearkitekt/core/lifecycle.lua",
-      "ARKITEKT/rearkitekt/core/math.lua",
-      "ARKITEKT/rearkitekt/core/undo_manager.lua",
-      "ARKITEKT/rearkitekt/gui/draw.lua",
-      "ARKITEKT/rearkitekt/gui/fx/dnd/config.lua",
-      "ARKITEKT/rearkitekt/gui/fx/easing.lua",
-      "ARKITEKT/rearkitekt/gui/fx/effects.lua",
-      "ARKITEKT/rearkitekt/gui/fx/tile_fx_config.lua",
-      "ARKITEKT/rearkitekt/gui/images.lua",
-      "ARKITEKT/rearkitekt/gui/systems/height_stabilizer.lua",
-      "ARKITEKT/rearkitekt/gui/systems/playback_manager.lua",
-      "ARKITEKT/rearkitekt/gui/systems/reorder.lua",
-      "ARKITEKT/rearkitekt/gui/systems/responsive_grid.lua",
-      "ARKITEKT/rearkitekt/gui/systems/selection.lua",
-      "ARKITEKT/rearkitekt/gui/systems/tile_utilities.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/controls/context_menu.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/controls/scrollbar.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/controls/tooltip.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/grid/dnd_state.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/grid/drop_zones.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/grid/grid_bridge.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/grid/layout.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/navigation/menutabs.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/overlay/config.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/package_tiles/micromanage.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/background.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/config.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/content.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/header/button.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/header/search_field.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/panel/header/separator.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/selection_rectangle.lua",
-      "ARKITEKT/rearkitekt/gui/widgets/sliders/hue.lua",
-      "ARKITEKT/rearkitekt/patterns/controller.lua",
-      "ARKITEKT/rearkitekt/reaper/regions.lua",
-      "ARKITEKT/rearkitekt/reaper/timing.lua",
-      "ARKITEKT/rearkitekt/reaper/transport.lua",
+      "ARKITEKT/arkitekt/app/config.lua",
+      "ARKITEKT/arkitekt/app/hub.lua",
+      "ARKITEKT/arkitekt/app/icon.lua",
+      "ARKITEKT/arkitekt/app/runtime.lua",
+      "ARKITEKT/arkitekt/app/titlebar.lua",
+      "ARKITEKT/arkitekt/app/window.lua",
+      "ARKITEKT/arkitekt/core/colors.lua",
+      "ARKITEKT/arkitekt/core/events.lua",
+      "ARKITEKT/arkitekt/core/json.lua",
+      "ARKITEKT/arkitekt/core/lifecycle.lua",
+      "ARKITEKT/arkitekt/core/math.lua",
+      "ARKITEKT/arkitekt/core/undo_manager.lua",
+      "ARKITEKT/arkitekt/gui/draw.lua",
+      "ARKITEKT/arkitekt/gui/fx/dnd/config.lua",
+      "ARKITEKT/arkitekt/gui/fx/easing.lua",
+      "ARKITEKT/arkitekt/gui/fx/effects.lua",
+      "ARKITEKT/arkitekt/gui/fx/tile_fx_config.lua",
+      "ARKITEKT/arkitekt/gui/images.lua",
+      "ARKITEKT/arkitekt/gui/systems/height_stabilizer.lua",
+      "ARKITEKT/arkitekt/gui/systems/playback_manager.lua",
+      "ARKITEKT/arkitekt/gui/systems/reorder.lua",
+      "ARKITEKT/arkitekt/gui/systems/responsive_grid.lua",
+      "ARKITEKT/arkitekt/gui/systems/selection.lua",
+      "ARKITEKT/arkitekt/gui/systems/tile_utilities.lua",
+      "ARKITEKT/arkitekt/gui/widgets/controls/context_menu.lua",
+      "ARKITEKT/arkitekt/gui/widgets/controls/scrollbar.lua",
+      "ARKITEKT/arkitekt/gui/widgets/controls/tooltip.lua",
+      "ARKITEKT/arkitekt/gui/widgets/grid/dnd_state.lua",
+      "ARKITEKT/arkitekt/gui/widgets/grid/drop_zones.lua",
+      "ARKITEKT/arkitekt/gui/widgets/grid/grid_bridge.lua",
+      "ARKITEKT/arkitekt/gui/widgets/grid/layout.lua",
+      "ARKITEKT/arkitekt/gui/widgets/navigation/menutabs.lua",
+      "ARKITEKT/arkitekt/gui/widgets/overlay/config.lua",
+      "ARKITEKT/arkitekt/gui/widgets/package_tiles/micromanage.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/background.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/config.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/content.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/header/button.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/header/search_field.lua",
+      "ARKITEKT/arkitekt/gui/widgets/panel/header/separator.lua",
+      "ARKITEKT/arkitekt/gui/widgets/selection_rectangle.lua",
+      "ARKITEKT/arkitekt/gui/widgets/sliders/hue.lua",
+      "ARKITEKT/arkitekt/patterns/controller.lua",
+      "ARKITEKT/arkitekt/reaper/regions.lua",
+      "ARKITEKT/arkitekt/reaper/timing.lua",
+      "ARKITEKT/arkitekt/reaper/transport.lua",
       "ARKITEKT/scripts/ColorPalette/app/controller.lua",
       "ARKITEKT/scripts/Region_Playlist/app/config.lua",
       "ARKITEKT/scripts/Region_Playlist/app/sequence_expander.lua",

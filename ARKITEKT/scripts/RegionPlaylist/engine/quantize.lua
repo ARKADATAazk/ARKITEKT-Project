@@ -1,9 +1,9 @@
 -- @noindex
--- ReArkitekt/features/region_playlist/engine/quantize.lua
+-- Arkitekt/features/region_playlist/engine/quantize.lua
 -- Quantized transitions using trigger region hack
 -- MODIFIED: Integrated Logger for debug output
 
-local Logger = require("rearkitekt.debug.logger")
+local Logger = require("arkitekt.debug.logger")
 
 -- Performance: Use VM operations instead of C function calls
 -- floor(x) = x//1 (5-10% faster in loops)

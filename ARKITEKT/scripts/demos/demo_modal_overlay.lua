@@ -1,5 +1,5 @@
 -- @noindex
--- ReArkitekt/demo_modal_overlay.lua
+-- Arkitekt/demo_modal_overlay.lua
 -- Demo of the modal overlay system with chip list integration + justified layout + mode switcher
 
 
@@ -40,17 +40,17 @@ local PARENT= dirname(HERE or ".") or "."
 local function addpath(p) if p and p~="" and not package.path:find(p,1,true) then package.path = p .. ";" .. package.path end end
 addpath(join(PARENT,"?.lua")); addpath(join(PARENT,"?/init.lua"))
 addpath(join(HERE,  "?.lua")); addpath(join(HERE,  "?/init.lua"))
-addpath(join(HERE,  "ReArkitekt/?.lua"))
-addpath(join(HERE,  "ReArkitekt/?/init.lua"))
-addpath(join(HERE,  "ReArkitekt/?/?.lua"))
+addpath(join(HERE,  "Arkitekt/?.lua"))
+addpath(join(HERE,  "Arkitekt/?/init.lua"))
+addpath(join(HERE,  "Arkitekt/?/?.lua"))
 
-local Shell = require("rearkitekt.app.runtime.shell")
-local Sheet = require("rearkitekt.gui.widgets.overlays.overlay.sheet")
-local ChipList = require("rearkitekt.gui.widgets.data.chip_list")
-local OverlayConfig = require("rearkitekt.gui.widgets.overlays.overlay.defaults")
+local Shell = require("arkitekt.app.runtime.shell")
+local Sheet = require("arkitekt.gui.widgets.overlays.overlay.sheet")
+local ChipList = require("arkitekt.gui.widgets.data.chip_list")
+local OverlayConfig = require("arkitekt.gui.widgets.overlays.overlay.defaults")
 
-local style_ok, Style = pcall(require, "rearkitekt.gui.style.imgui_defaults")
-local Colors = require('rearkitekt.core.colors')
+local style_ok, Style = pcall(require, "arkitekt.gui.style.imgui_defaults")
+local Colors = require('arkitekt.core.colors')
 local hexrgb = Colors.hexrgb
 
 

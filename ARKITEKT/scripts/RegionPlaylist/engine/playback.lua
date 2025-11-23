@@ -1,13 +1,13 @@
 -- @noindex
--- ReArkitekt/features/region_playlist/playback.lua
--- Runtime playback loop - integrates with ReArkitekt runtime
+-- Arkitekt/features/region_playlist/playback.lua
+-- Runtime playback loop - integrates with Arkitekt runtime
 
 -- Performance: Localize math functions for hot path (30% faster in loops)
 local max = math.max
 local min = math.min
 
 -- Performance: Cache module to avoid repeated require() lookups in hot functions
-local Transport = require('rearkitekt.reaper.transport')
+local Transport = require('arkitekt.reaper.transport')
 
 local M = {}
 local Playback = {}

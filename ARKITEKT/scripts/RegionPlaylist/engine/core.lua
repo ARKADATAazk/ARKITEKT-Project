@@ -1,5 +1,5 @@
 -- @noindex
--- ReArkitekt/features/region_playlist/engine/engine.lua
+-- Arkitekt/features/region_playlist/engine/engine.lua
 -- Refactored: State, Transport, and Transitions extracted
 
 local EngineState = require('RegionPlaylist.engine.engine_state')

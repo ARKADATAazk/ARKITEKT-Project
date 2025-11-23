@@ -1,5 +1,5 @@
 -- @noindex
--- demo.lua — ReArkitekt ColorBlocks demo (fixed: numeric gap/min_col_w)
+-- demo.lua — Arkitekt ColorBlocks demo (fixed: numeric gap/min_col_w)
 
 -- MUST BE FIRST: Load ImGui
 
@@ -35,11 +35,11 @@ local ImGui = require 'imgui' '0.10'
 -- ReaImGui presence check (AFTER loading)
 if not ImGui.CreateContext then
   reaper.ShowMessageBox("ReaImGui missing (install via ReaPack → ReaTeam Extensions → ReaImGui).",
-                        "ReArkitekt Demo", 0)
+                        "Arkitekt Demo", 0)
   return
 end
 
--- Paths to resolve require('ReArkitekt.*') when this file sits inside ReArkitekt/
+-- Paths to resolve require('Arkitekt.*') when this file sits inside Arkitekt/
 local function dirname(p) return p:match("^(.*)[/\\]") end
 local function join(a,b) local s=package.config:sub(1,1); return (a:sub(-1)==s) and (a..b) or (a..s..b) end
 local SRC   = debug.getinfo(1,"S").source:sub(2)
@@ -50,13 +50,13 @@ addpath(join(PARENT,"?.lua")); addpath(join(PARENT,"?/init.lua"))
 addpath(join(HERE,  "?.lua")); addpath(join(HERE,  "?/init.lua"))
 
 -- Your modules
-local Shell        = require("rearkitekt.app.runtime.shell")
-local Settings     = (function() local ok,m=pcall(require,"rearkitekt.core.settings"); return ok and m or nil end)()
-local okStyle,Style= pcall(require,"rearkitekt.gui.style.imgui_defaults")
-local ColorBlocks  = require("ReArkitekt.gui.widgets.colorblocks")
-local Draw         = require("rearkitekt.gui.draw")
-local Effects      = require("rearkitekt.gui.rendering.effects")
-local Colors = require('rearkitekt.core.colors')
+local Shell        = require("arkitekt.app.runtime.shell")
+local Settings     = (function() local ok,m=pcall(require,"arkitekt.core.settings"); return ok and m or nil end)()
+local okStyle,Style= pcall(require,"arkitekt.gui.style.imgui_defaults")
+local ColorBlocks  = require("Arkitekt.gui.widgets.colorblocks")
+local Draw         = require("arkitekt.gui.draw")
+local Effects      = require("arkitekt.gui.rendering.effects")
+local Colors = require('arkitekt.core.colors')
 local hexrgb = Colors.hexrgb
 
 
@@ -244,7 +244,7 @@ end
 
 -- Run via Shell (Window + Style)
 Shell.run({
-  title        = "ReArkitekt — ColorBlocks Demo",
+  title        = "Arkitekt — ColorBlocks Demo",
   draw         = draw,
   settings     = settings,
   style        = okStyle and Style or nil,

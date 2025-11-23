@@ -30,7 +30,7 @@ package.path = root_path .. "?.lua;" .. root_path .. "?/init.lua;" .. package.pa
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua;' .. package.path
 local ImGui = require 'imgui' '0.10'
 
--- Path setup (assuming standard ReArkitekt structure)
+-- Path setup (assuming standard Arkitekt structure)
 local function dirname(p) return p:match("^(.*)[/\\]") end
 local function join(a,b) local s=package.config:sub(1,1); return (a:sub(-1)==s) and (a..b) or (a..s..b) end
 local SRC   = debug.getinfo(1,"S").source:sub(2)
@@ -39,14 +39,14 @@ local PARENT= dirname(HERE or ".") or "."
 local function addpath(p) if p and p~="" and not package.path:find(p,1,true) then package.path = p .. ";" .. package.path end end
 addpath(join(PARENT,"?.lua")); addpath(join(PARENT,"?/init.lua"))
 addpath(join(HERE,  "?.lua")); addpath(join(HERE,  "?/init.lua"))
-addpath(join(HERE,  "ReArkitekt/?.lua")); addpath(join(HERE, "ReArkitekt/?/init.lua"))
+addpath(join(HERE,  "Arkitekt/?.lua")); addpath(join(HERE, "Arkitekt/?/init.lua"))
 
-local Shell = require("rearkitekt.app.runtime.shell")
-local StatusPad = require("rearkitekt.gui.widgets.data.status_pad")
-local StatusBar = require("rearkitekt.app.chrome.status_bar.widget")
+local Shell = require("arkitekt.app.runtime.shell")
+local StatusPad = require("arkitekt.gui.widgets.data.status_pad")
+local StatusBar = require("arkitekt.app.chrome.status_bar.widget")
 
-local style_ok, Style = pcall(require, "rearkitekt.gui.style.imgui_defaults")
-local Colors = require('rearkitekt.core.colors')
+local style_ok, Style = pcall(require, "arkitekt.gui.style.imgui_defaults")
+local Colors = require('arkitekt.core.colors')
 local hexrgb = Colors.hexrgb
 
 
@@ -140,7 +140,7 @@ end
 
 -- Run the application shell
 Shell.run({
-  title        = "ReArkitekt – Status Pads Demo (Reworked)",
+  title        = "Arkitekt – Status Pads Demo (Reworked)",
   draw         = draw,
   style        = style_ok and Style or nil,
   initial_pos  = { x = 140, y = 140 },

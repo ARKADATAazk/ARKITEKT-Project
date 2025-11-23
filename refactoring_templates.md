@@ -76,9 +76,9 @@ CREATE_FILE: RegionPlaylist/__init__.lua | -- Region Playlist module
 CREATE_FILE: RegionPlaylist/app/controller.lua
 
 # Map old paths to new paths
-ReArkitekt.gui.widgets.region_tiles -> RegionPlaylist.widgets.region_tiles
-ReArkitekt.features.region_playlist.state -> RegionPlaylist.storage.state
-ReArkitekt.features.region_playlist.playlist_controller -> RegionPlaylist.app.controller
+Arkitekt.gui.widgets.region_tiles -> RegionPlaylist.widgets.region_tiles
+Arkitekt.features.region_playlist.state -> RegionPlaylist.storage.state
+Arkitekt.features.region_playlist.playlist_controller -> RegionPlaylist.app.controller
 ```
 
 ### Execution Order
@@ -108,12 +108,12 @@ The tool:
 **Commands:**
 ```
 CREATE_DIR: RegionPlaylist/widgets
-ReArkitekt.gui.widgets.region_tiles -> RegionPlaylist.widgets.region_tiles
+Arkitekt.gui.widgets.region_tiles -> RegionPlaylist.widgets.region_tiles
 ```
 
 **Before:**
 ```lua
-local RegionTiles = require("ReArkitekt.gui.widgets.region_tiles.coordinator")
+local RegionTiles = require("Arkitekt.gui.widgets.region_tiles.coordinator")
 ```
 
 **After:**

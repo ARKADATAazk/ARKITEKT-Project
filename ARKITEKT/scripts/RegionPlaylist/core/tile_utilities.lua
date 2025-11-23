@@ -1,5 +1,5 @@
 -- @noindex
--- ReArkitekt/gui/systems/tile_utilities.lua
+-- Arkitekt/gui/systems/tile_utilities.lua
 
 local M = {}
 

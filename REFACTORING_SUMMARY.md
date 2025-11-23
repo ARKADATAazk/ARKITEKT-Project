@@ -1,4 +1,4 @@
-# ReArkitekt Controls Refactoring Summary
+# Arkitekt Controls Refactoring Summary
 
 ## Overview
 Refactored the panel widget system to eliminate adapter files and create truly reusable base components that work in both panel and standalone contexts.
@@ -61,11 +61,11 @@ M.RENDER = {
 #### **panel/header/layout.lua** (Updated)
 ```lua
 local COMPONENTS = {
-  button = require('rearkitekt.gui.widgets.controls.button'),
-  search_field = require('rearkitekt.gui.widgets.controls.search_input'),
-  dropdown_field = require('rearkitekt.gui.widgets.controls.dropdown'),
-  tab_strip = require('rearkitekt.gui.widgets.panel.header.tab_strip'),
-  separator = require('rearkitekt.gui.widgets.panel.header.separator'),
+  button = require('arkitekt.gui.widgets.controls.button'),
+  search_field = require('arkitekt.gui.widgets.controls.search_input'),
+  dropdown_field = require('arkitekt.gui.widgets.controls.dropdown'),
+  tab_strip = require('arkitekt.gui.widgets.panel.header.tab_strip'),
+  separator = require('arkitekt.gui.widgets.panel.header.separator'),
 }
 ```
 - Imports base components directly
@@ -124,7 +124,7 @@ end
 
 ### Standalone Usage:
 ```lua
-local Button = require('rearkitekt.gui.widgets.controls.button')
+local Button = require('arkitekt.gui.widgets.controls.button')
 
 Button.draw(ctx, dl, x, y, 100, 30, {
   label = "Click Me",
@@ -250,9 +250,9 @@ header = {
 
 ### For New Standalone Usage:
 ```lua
-local Button = require('rearkitekt.gui.widgets.controls.button')
-local SearchInput = require('rearkitekt.gui.widgets.controls.search_input')
-local Dropdown = require('rearkitekt.gui.widgets.controls.dropdown')
+local Button = require('arkitekt.gui.widgets.controls.button')
+local SearchInput = require('arkitekt.gui.widgets.controls.search_input')
+local Dropdown = require('arkitekt.gui.widgets.controls.dropdown')
 
 -- Use anywhere!
 Button.draw(ctx, dl, x, y, w, h, config, "id")
@@ -304,7 +304,7 @@ Dropdown.draw(ctx, dl, x, y, w, h, config, "id")
 
 ## ✅ Conclusion
 
-Successfully refactored the ReArkitekt control system to:
+Successfully refactored the Arkitekt control system to:
 - Eliminate unnecessary adapter files
 - Create truly reusable base components
 - Maintain 100% backward compatibility

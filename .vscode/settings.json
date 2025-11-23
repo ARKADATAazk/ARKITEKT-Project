@@ -13,47 +13,47 @@
     "lua_analyzer.codeLinting.enable": false,
     "folder-color.pathColors": [
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\fonts\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\fonts\\",
             "color": "foldercolorizer.color_666666"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\",
             "color": "foldercolorizer.color_00cc66"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\fx\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\fx\\",
             "color": "foldercolorizer.color_990033"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\systems\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\systems\\",
             "color": "foldercolorizer.color_3366ff"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\",
             "color": "foldercolorizer.color_cc6633"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\grid\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\grid\\",
             "color": "foldercolorizer.color_66ccff"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\navigation\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\navigation\\",
             "color": "foldercolorizer.color_009999"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\overlay\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\overlay\\",
             "color": "foldercolorizer.color_66cc00"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\panel\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\panel\\",
             "color": "foldercolorizer.color_ff0099"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\transport\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\transport\\",
             "color": "foldercolorizer.color_cc00ff"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\icons\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\icons\\",
             "color": "foldercolorizer.color_99ccff"
         },
         {
@@ -81,15 +81,15 @@
             "color": "foldercolorizer.color_cc3300"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\app\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\app\\",
             "color": "foldercolorizer.color_cc0099"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\core\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\core\\",
             "color": "foldercolorizer.color_ccff66"
         },
         {
-            "folderPath": "ARKITEKT-Project\\ARKITEKT\\rearkitekt\\gui\\widgets\\nodal\\",
+            "folderPath": "ARKITEKT-Project\\ARKITEKT\\arkitekt\\gui\\widgets\\nodal\\",
             "color": "foldercolorizer.color_cc66ff"
         },
         {

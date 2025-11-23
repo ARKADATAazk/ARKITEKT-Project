@@ -39,18 +39,18 @@ local PARENT= dirname(HERE or ".") or "."
 local function addpath(p) if p and p~="" and not package.path:find(p,1,true) then package.path = p .. ";" .. package.path end end
 addpath(join(PARENT,"?.lua")); addpath(join(PARENT,"?/init.lua"))
 addpath(join(HERE,  "?.lua")); addpath(join(HERE,  "?/init.lua"))
-addpath(join(HERE,  "ReArkitekt/?.lua"))
-addpath(join(HERE,  "ReArkitekt/?/init.lua"))
-addpath(join(HERE,  "ReArkitekt/?/?.lua"))
+addpath(join(HERE,  "Arkitekt/?.lua"))
+addpath(join(HERE,  "Arkitekt/?/init.lua"))
+addpath(join(HERE,  "Arkitekt/?/?.lua"))
 
 -- Libs
-local Shell         = require("rearkitekt.app.runtime.shell")
-local ColorSliders  = require("rearkitekt.gui.widgets.primitives.hue_slider")
-local TilesContainer = require("rearkitekt.gui.widgets.containers.panel")
+local Shell         = require("arkitekt.app.runtime.shell")
+local ColorSliders  = require("arkitekt.gui.widgets.primitives.hue_slider")
+local TilesContainer = require("arkitekt.gui.widgets.containers.panel")
 
 -- Fallback style
-local style_ok, Style = pcall(require, "rearkitekt.gui.style.imgui_defaults")
-local Colors = require('rearkitekt.core.colors')
+local style_ok, Style = pcall(require, "arkitekt.gui.style.imgui_defaults")
+local Colors = require('arkitekt.core.colors')
 local hexrgb = Colors.hexrgb
 
 
@@ -199,7 +199,7 @@ end
 
 -- Run
 Shell.run({
-  title        = "ReArkitekt – Color Sliders Demo",
+  title        = "Arkitekt – Color Sliders Demo",
   draw         = draw,
   style        = style_ok and Style or nil,
   initial_pos  = { x = 140, y = 140 },

@@ -1,9 +1,9 @@
 -- @noindex
--- ReArkitekt/features/region_playlist/engine/transitions.lua
+-- Arkitekt/features/region_playlist/engine/transitions.lua
 -- Smooth transition logic between regions - FIXED: Handle same-region repeats with time-based transitions
 -- MODIFIED: Integrated Logger for debug output
 
-local Logger = require("rearkitekt.debug.logger")
+local Logger = require("arkitekt.debug.logger")
 
 local M = {}
 local Transitions = {}

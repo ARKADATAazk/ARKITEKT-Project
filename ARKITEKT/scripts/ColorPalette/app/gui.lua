@@ -1,15 +1,15 @@
 -- @noindex
--- ReArkitekt/ColorPalette/app/gui.lua
+-- Arkitekt/ColorPalette/app/gui.lua
 -- Main GUI orchestrator for Color Palette (Frameless Edition)
 
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua;' .. package.path
 local ImGui = require 'imgui' '0.10'
 
-local Colors = require('rearkitekt.core.colors')
-local Draw = require('rearkitekt.gui.draw')
+local Colors = require('arkitekt.core.colors')
+local Draw = require('arkitekt.gui.draw')
 local ColorGrid = require('ColorPalette.widgets.color_grid')
 local Controller = require('ColorPalette.app.controller')
-local Sheet = require('rearkitekt.gui.widgets.overlays.overlay.sheet')
+local Sheet = require('arkitekt.gui.widgets.overlays.overlay.sheet')
 
 local M = {}
 
@@ -198,7 +198,7 @@ function GUI:draw_settings_content(ctx, w, h, alpha)
       ImGui.Spacing(ctx)
       ImGui.TextWrapped(ctx, "Color Palette Tool")
       ImGui.Spacing(ctx)
-      ImGui.TextWrapped(ctx, "A discrete, frameless color palette for REAPER. ReArkitekt port of Rodilab's Color Palette script.")
+      ImGui.TextWrapped(ctx, "A discrete, frameless color palette for REAPER. Arkitekt port of Rodilab's Color Palette script.")
       ImGui.Spacing(ctx)
       ImGui.Separator(ctx)
       ImGui.Spacing(ctx)

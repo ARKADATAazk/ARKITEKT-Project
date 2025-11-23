@@ -1,5 +1,5 @@
 -- @noindex
--- ReArkitekt/features/region_playlist/engine/transport.lua
+-- Arkitekt/features/region_playlist/engine/transport.lua
 -- Transport control and seeking logic
 
 local M = {}
