@@ -65,19 +65,19 @@ function M.create(get_templates, metadata, animator, get_tile_width, get_view_mo
         ImGui.PushStyleColor(ctx, ImGui.Col_DragDropTarget, Colors.hexrgb("#00000000"))
 
         if ImGui.BeginDragDropTarget(ctx) then
-          -- Check if a tag is being dragged (peek without accepting)
-          local tag_payload = DragDrop.peek_payload(ctx, Constants.DRAG_TYPES.TAG)
+          -- Accept with preview flag to get payload data while hovering
+          local flags = ImGui.DragDropFlags_AcceptBeforeDelivery
+          local payload_str, is_preview, is_delivery = ImGui.AcceptDragDropPayload(ctx, Constants.DRAG_TYPES.TAG, flags)
 
-          if tag_payload then
+          if payload_str then
             -- Draw active target highlight when hovering with a tag
             DragDrop.draw_active_target(ctx, rect)
-          end
 
-          -- Accept drop
-          local payload = DragDrop.accept_drop(ctx, Constants.DRAG_TYPES.TAG)
-          if payload then
-            -- Apply tag to template
-            on_tag_drop(template, payload)
+            -- Only process on actual delivery (drop)
+            if is_delivery then
+              local payload = DragDrop._deserialize(payload_str) or payload_str
+              on_tag_drop(template, payload)
+            end
           end
           ImGui.EndDragDropTarget(ctx)
         end
