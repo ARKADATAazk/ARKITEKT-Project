@@ -70,10 +70,6 @@ local function load_fonts(ctx, font_cfg)
   -- Use shared font directory lookup
   local fontsdir = Fonts.find_fonts_dir()
 
-  local dejavu_regular = fontsdir .. 'DejaVuSans.ttf'
-  local dejavu_bold = fontsdir .. 'DejaVuSans-Bold.ttf'
-  local R = fontsdir .. font_cfg.family_regular
-  local B = fontsdir .. font_cfg.family_bold
   local M = fontsdir .. font_cfg.family_mono
   local I = fontsdir .. font_cfg.family_icons
   local O = fontsdir .. 'Orbitron-Bold.ttf'  -- Orbitron for branding
@@ -89,29 +85,31 @@ local function load_fonts(ctx, font_cfg)
     end
   end
 
-  -- Use DejaVu Sans for full Unicode coverage (35,000+ glyphs including ⋮, ↑, ↓)
-  local default_font   = exists(dejavu_regular) and ImGui.CreateFontFromFile(dejavu_regular, 0, 0) or ImGui.CreateFont('sans-serif', 0)
-  local title_font     = exists(dejavu_regular) and ImGui.CreateFontFromFile(dejavu_regular, 0, 0) or ImGui.CreateFont('sans-serif', 0)
-  local version_font   = exists(dejavu_regular) and ImGui.CreateFontFromFile(dejavu_regular, 0, 0) or ImGui.CreateFont('sans-serif', 0)
+  -- Use system default fonts (Segoe UI on Windows, San Francisco on Mac)
+  -- These have excellent Unicode coverage including arrows (↑↓) and symbols (⋮)
+  local default_font   = ImGui.CreateFont('sans-serif', 0)
+  local title_font     = ImGui.CreateFont('sans-serif', 0)
+  local version_font   = ImGui.CreateFont('sans-serif', 0)
 
-  -- Keep loading specific fonts from TTF files
+  -- Load monospace for code/technical displays
   local monospace_font = exists(M) and ImGui.CreateFontFromFile(M, 0, 0)
-                                or default_font
+                                or ImGui.CreateFont('monospace', 0)
 
   -- Load Orbitron for branding text
   local orbitron_size = font_cfg.orbitron or Constants.TITLEBAR.branding_font_size
   local orbitron_font = exists(O) and ImGui.CreateFontFromFile(O, 0, 0) or nil
 
+  -- Time display MUST use monospace to prevent number jumping
   local time_display_font = nil
   if font_cfg.time_display then
-    time_display_font = exists(dejavu_regular) and ImGui.CreateFontFromFile(dejavu_regular, 0, 0) or ImGui.CreateFont('sans-serif', 0)
+    time_display_font = exists(M) and ImGui.CreateFontFromFile(M, 0, 0) or ImGui.CreateFont('monospace', 0)
     attach_once(time_display_font)
   end
 
   local titlebar_version_font = nil
   local titlebar_version_size = font_cfg.titlebar_version or font_cfg.version
   if font_cfg.titlebar_version then
-    titlebar_version_font = exists(dejavu_regular) and ImGui.CreateFontFromFile(dejavu_regular, 0, 0) or ImGui.CreateFont('sans-serif', 0)
+    titlebar_version_font = ImGui.CreateFont('sans-serif', 0)
     attach_once(titlebar_version_font)
   end
 
