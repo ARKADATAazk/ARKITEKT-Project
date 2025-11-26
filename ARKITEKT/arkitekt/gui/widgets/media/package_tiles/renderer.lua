@@ -341,7 +341,7 @@ function M.TileRenderer.tags(ctx, dl, P, tile_x, tile_y, tile_w, tile_h)
   if metadata then
     local image_names = {}
     for key, _ in pairs(P.assets or {}) do
-      table.insert(image_names, key)
+      image_names[#image_names + 1] = key
     end
     auto_tags = metadata.suggest_tags(image_names, 0.2) or {}
   end
@@ -349,10 +349,10 @@ function M.TileRenderer.tags(ctx, dl, P, tile_x, tile_y, tile_w, tile_h)
   -- Combine manual tags (like RTCONFIG) with auto-generated area tags
   local tags = {}
   for _, tag in ipairs(manual_tags) do
-    table.insert(tags, tag)
+    tags[#tags + 1] = tag
   end
   for _, tag in ipairs(auto_tags) do
-    table.insert(tags, tag)
+    tags[#tags + 1] = tag
   end
 
   if #tags == 0 then return end
@@ -364,7 +364,7 @@ function M.TileRenderer.tags(ctx, dl, P, tile_x, tile_y, tile_w, tile_h)
     local display_name = M.CONFIG.tags.display[tag] or tag
     if not seen[display_name] then
       seen[display_name] = true
-      table.insert(display_tags, display_name)
+      display_tags[#display_tags + 1] = display_name
       if #display_tags >= M.CONFIG.tags.max_tags then
         break
       end
@@ -381,7 +381,7 @@ function M.TileRenderer.tags(ctx, dl, P, tile_x, tile_y, tile_w, tile_h)
   for _, tag in ipairs(display_tags) do
     local text_w, _ = ImGui.CalcTextSize(ctx, tag)
     local chip_w = text_w + M.CONFIG.tags.padding_x * 2
-    table.insert(chips, {text = tag, width = chip_w})
+    chips[#chips + 1] = {text = tag, width = chip_w}
     total_width = total_width + chip_w
   end
   total_width = total_width + (#chips - 1) * M.CONFIG.tags.gap
@@ -521,7 +521,7 @@ function M.TileRenderer.mosaic(ctx, dl, theme, P, tile_x, tile_y, tile_w, tile_h
   local valid_keys = {}
   for _, key in ipairs(preview_keys) do
     if key then
-      table.insert(valid_keys, key)
+      valid_keys[#valid_keys + 1] = key
     end
   end
   local num_images = math.min(M.CONFIG.mosaic.count, #valid_keys)
