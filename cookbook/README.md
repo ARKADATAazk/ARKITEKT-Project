@@ -11,6 +11,7 @@
 | [LUA_PERFORMANCE_GUIDE.md](LUA_PERFORMANCE_GUIDE.md) | Lua/REAPER/ImGui performance optimization |
 | [THEME_MANAGER.md](THEME_MANAGER.md) | Dynamic theming system with REAPER integration |
 | [WIDGETS.md](WIDGETS.md) | Widget development patterns and API contract |
+| [DEMO_GUIDE.md](DEMO_GUIDE.md) | Modular demo system architecture and best practices |
 | [DEPRECATED.md](DEPRECATED.md) | Deprecation tracker and removal process |
 | [MIGRATION_PLANS.md](MIGRATION_PLANS.md) | Per-script migration roadmaps |
 
