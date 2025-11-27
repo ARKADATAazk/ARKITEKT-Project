@@ -301,7 +301,7 @@ function M.draw_columns(ctx, items, opts)
   -- Center items when sparse (fewer items than fill a column) and NOT single column
   if opts.center_when_sparse and #filtered < items_per_column and num_columns > 1 then
     local total_grid_width = num_columns * (actual_column_width + column_spacing) - column_spacing
-    local center_offset = math.floor((avail_w - total_grid_width) / 2)
+    local center_offset = (avail_w - total_grid_width) // 2
     if center_offset > 0 then
       start_x = start_x + center_offset
     end

@@ -670,7 +670,7 @@ function LayoutView:render(ctx, title_font, title_font_size, title, screen_w, sc
 
   -- Calculate search width and center it
   local search_width = screen_w * self.config.LAYOUT.SEARCH_WIDTH_RATIO
-  local search_x = coord_offset_x + math.floor((screen_w - search_width) / 2)
+  local search_x = coord_offset_x + (screen_w - search_width) // 2
 
   -- Position buttons left of search: [Track] [Content] [Layout] [Search]
   local buttons_left_x = search_x

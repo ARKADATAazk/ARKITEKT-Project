@@ -102,7 +102,7 @@ function M.render(ctx, opts)
   -- Draw color chips
   for i, color in ipairs(preset_colors) do
     local col_idx = (i - 1) % columns
-    local row_idx = math.floor((i - 1) / columns)
+    local row_idx = (i - 1) // columns
 
     -- Center position for chip (grid_offset_x positions left edge, add half size for center)
     local chip_cx = menu_start_x + grid_offset_x + (effective_size / 2) + col_idx * chip_spacing

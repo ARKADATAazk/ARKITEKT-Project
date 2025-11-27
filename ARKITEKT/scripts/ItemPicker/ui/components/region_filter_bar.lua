@@ -94,7 +94,7 @@ function M.draw(ctx, draw_list, x, y, width, state, config, alpha)
     end
 
     -- Center the line
-    local line_x = x + padding_x + math.floor((available_width - line_width) / 2)
+    local line_x = x + padding_x + (available_width - line_width) // 2
     local line_y = y + padding_y + (line_idx - 1) * (chip_height + line_spacing)
 
     -- Render chips on this line

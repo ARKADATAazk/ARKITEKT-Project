@@ -530,7 +530,7 @@ end
 -- Draw assets in grid view with virtualization
 function PackageModal:draw_grid_view(ctx, pkg)
   local avail_w = ImGui.GetContentRegionAvail(ctx)
-  local columns = math.max(1, math.floor(avail_w / (TILE_WIDTH + TILE_SPACING)))
+  local columns = math.max(1, avail_w // (TILE_WIDTH + TILE_SPACING))
 
   -- Get scroll info for virtualization
   local scroll_y = ImGui.GetScrollY(ctx)
@@ -662,7 +662,7 @@ function PackageModal:draw_grid_view(ctx, pkg)
     local total_height = num_rows * row_height
 
     -- Calculate visible row range
-    local first_visible_row = math.max(0, math.floor(visible_top / row_height) - 2)
+    local first_visible_row = math.max(0, visible_top // row_height - 2)
     local last_visible_row = math.min(num_rows - 1, math.ceil(visible_bottom / row_height) + 2)
 
     -- Render only visible rows

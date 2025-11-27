@@ -274,7 +274,7 @@ function M.organize_items(items, group_fn)
         })
       end
 
-      table.insert(groups_map[group_info.id].items, item)
+      groups_map[group_info.id].items[#groups_map[group_info.id].items + 1] = item
     else
       -- Ungrouped item
       ungrouped[#ungrouped + 1] = item

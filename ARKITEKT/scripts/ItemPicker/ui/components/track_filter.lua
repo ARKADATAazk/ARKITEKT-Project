@@ -624,7 +624,7 @@ function M.render_modal(ctx, state, bounds)
 
   if is_over_slider and ImGui.IsMouseDown(ctx, ImGui.MouseButton_Left) then
     -- Calculate new value from mouse position
-    local new_value = math.floor(((mouse_x - track_x) / track_w) * max_depth + 0.5)
+    local new_value = (((mouse_x - track_x) / track_w) * max_depth + 0.5) // 1
     new_value = math.max(0, math.min(new_value, max_depth))
 
     if new_value ~= state.track_filter_expand_level then

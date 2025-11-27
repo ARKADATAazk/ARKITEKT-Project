@@ -52,7 +52,7 @@ function M.draw_at_cursor(ctx, tabs, active_tab, user_config)
   -- Calculate tab width if not specified
   if not tab_width then
     local available_width = config.available_width or ImGui.GetContentRegionAvail(ctx)
-    tab_width = math.floor((available_width - (spacing * (#tabs - 1))) / #tabs)
+    tab_width = (available_width - (spacing * (#tabs - 1))) // #tabs
   end
 
   local clicked_tab = nil
