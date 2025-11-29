@@ -102,6 +102,23 @@ local last_cleanup_time = 0
 local CLEANUP_INTERVAL = 60.0  -- Cleanup every 60 seconds
 local STALE_THRESHOLD = 30.0   -- Remove instances not accessed for 30 seconds
 
+-- Frame time cache - avoids calling reaper.time_precise() per widget
+-- Initialize to current time so cleanup doesn't think everything is stale
+local cached_frame_time = reaper.time_precise()
+
+--- Update the cached frame time (call once per frame from main loop)
+--- @return number Current frame time
+function M.begin_frame()
+  cached_frame_time = reaper.time_precise()
+  return cached_frame_time
+end
+
+--- Get the cached frame time (fast, no FFI call)
+--- @return number Cached frame time
+function M.get_frame_time()
+  return cached_frame_time
+end
+
 --- Create a new instance registry with access tracking
 --- Uses strong references but tracks access time for periodic cleanup
 --- @return table Instance registry
@@ -127,9 +144,9 @@ function M.get_or_create_instance(registry, id, create_fn)
     instances[id] = create_fn(id)
   end
 
-  -- Track access time for cleanup
+  -- Track access time for cleanup (uses cached frame time, not fresh call)
   if access_times then
-    access_times[id] = reaper.time_precise()
+    access_times[id] = cached_frame_time
   end
 
   return instances[id]
@@ -188,9 +205,10 @@ end
 -- ============================================================================
 
 --- Parse and validate widget options with defaults
+--- Uses metatables to avoid table copying - O(1) instead of O(n) per call
 --- @param opts table|nil User-provided options
 --- @param defaults table Default values
---- @return table Merged options
+--- @return table Merged options (opts with metatable fallback to defaults)
 function M.parse_opts(opts, defaults)
   -- Type check to catch incorrect API usage
   if opts ~= nil and type(opts) ~= "table" then
@@ -198,20 +216,31 @@ function M.parse_opts(opts, defaults)
           ". Did you use the old API format instead of opts table?", 2)
   end
 
-  opts = opts or {}
-  local result = {}
-
-  -- Copy defaults first
-  for k, v in pairs(defaults) do
-    result[k] = v
+  -- Fast path: no opts → return defaults directly (zero allocation)
+  if not opts then
+    return defaults
   end
 
-  -- Override with user options
-  for k, v in pairs(opts) do
-    result[k] = v
+  -- Fast path: empty opts → return defaults directly (zero allocation)
+  if next(opts) == nil then
+    return defaults
   end
 
-  return result
+  -- If opts already has a metatable, fall back to copying (rare case)
+  if getmetatable(opts) then
+    local result = {}
+    for k, v in pairs(defaults) do
+      result[k] = v
+    end
+    for k, v in pairs(opts) do
+      result[k] = v
+    end
+    return result
+  end
+
+  -- Fast path: set metatable so missing keys fall through to defaults
+  -- This avoids copying ~30 fields per widget per frame
+  return setmetatable(opts, { __index = defaults })
 end
 
 --- Resolve unique ID from options
@@ -511,20 +540,26 @@ end
 -- RESULT BUILDER
 -- ============================================================================
 
+-- Default result values (used as metatable fallback)
+local RESULT_DEFAULTS = {
+  clicked = false,
+  right_clicked = false,
+  changed = false,
+  value = nil,
+  width = 0,
+  height = 0,
+  hovered = false,
+  active = false,
+}
+
 --- Create standardized result table
+--- Uses metatable for defaults to avoid copying fields
 --- @param base table Base result values
---- @return table Result table
+--- @return table Result table (base with metatable fallback)
 function M.create_result(base)
-  return {
-    clicked = base.clicked or false,
-    right_clicked = base.right_clicked or false,
-    changed = base.changed or false,
-    value = base.value,
-    width = base.width or 0,
-    height = base.height or 0,
-    hovered = base.hovered or false,
-    active = base.active or false,
-  }
+  -- Just set metatable on base - missing fields fall through to defaults
+  -- This avoids creating a new table and copying 8 fields per widget per frame
+  return setmetatable(base, { __index = RESULT_DEFAULTS })
 end
 
 -- ============================================================================
