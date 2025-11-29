@@ -99,13 +99,13 @@ end
 
 local function detect_default_base_dir()
   -- We assume this DevKit script lives in:
-  --   <base_dir>/ARKITEKT-Toolkit/scripts/DevKit/ARK_DevKit.lua
+  --   <base_dir>/ARKITEKT-Dev/scripts/DevKit/ARK_DevKit.lua
   local src = debug.getinfo(1, "S").source:sub(2)
   local devkit_dir = dirname(src)
   if not devkit_dir then return nil end
   local scripts_dir = dirname(devkit_dir)     -- .../scripts
   if not scripts_dir then return nil end
-  local repo_root = dirname(scripts_dir)      -- .../ARKITEKT-Toolkit
+  local repo_root = dirname(scripts_dir)      -- .../ARKITEKT-Dev
   if not repo_root then return nil end
   local base_dir = dirname(repo_root)         -- .../ (parent of all worktrees)
   return base_dir
@@ -119,14 +119,14 @@ local function find_worktrees(base_dir)
   while true do
     local name = reaper.EnumerateSubdirectories(base_dir, i)
     if not name then break end
-    if name == "ARKITEKT-Toolkit" or name:match("^ARKITEKT%-Toolkit%-") then
+    if name == "ARKITEKT-Dev" or name:match("^ARKITEKT%-Dev%-") then
       local path = normalize(base_dir .. sep .. name)
       local key
-      if name == "ARKITEKT-Toolkit" then
+      if name == "ARKITEKT-Dev" then
         key = "main"
       else
-        -- e.g. ARKITEKT-Toolkit-tiles -> tiles
-        key = name:sub(#"ARKITEKT-Toolkit-" + 1)
+        -- e.g. ARKITEKT-Dev-tiles -> tiles
+        key = name:sub(#"ARKITEKT-Dev-" + 1)
       end
       table.insert(worktrees, {
         key  = key,
@@ -232,7 +232,7 @@ if not base_dir or base_dir == "" then
   local ok, input = reaper.GetUserInputs(
     "ARK DevKit - Base directory",
     1,
-    "Base dir (where ARKITEKT-Toolkit* live):",
+    "Base dir (where ARKITEKT-Dev* live):",
     ""
   )
   if not ok or input == "" then return end
@@ -244,7 +244,7 @@ base_dir = normalize(base_dir)
 -- 2) Find worktrees
 local worktrees = find_worktrees(base_dir)
 if #worktrees == 0 then
-  reaper.MB("No ARKITEKT-Toolkit* worktrees found in:\n\n" .. base_dir, "ARK DevKit error", 0)
+  reaper.MB("No ARKITEKT-Dev* worktrees found in:\n\n" .. base_dir, "ARK DevKit error", 0)
   return
 end
 

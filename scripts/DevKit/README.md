@@ -4,11 +4,11 @@ Development launcher for ARKITEKT apps across multiple git worktrees.
 
 ## Purpose
 
-ARK DevKit provides a single, stable entry point for launching ARKITEKT apps from any worktree in a multi-branch development workflow. It auto-detects all `ARKITEKT-Toolkit*` worktrees and their entrypoints, making it easy to switch between different feature branches and apps.
+ARK DevKit provides a single, stable entry point for launching ARKITEKT apps from any worktree in a multi-branch development workflow. It auto-detects all `ARKITEKT-Dev*` worktrees and their entrypoints, making it easy to switch between different feature branches and apps.
 
 ## Features
 
-- **Auto-detection**: Automatically finds all ARKITEKT-Toolkit* worktrees
+- **Auto-detection**: Automatically finds all ARKITEKT-Dev* worktrees
 - **Entrypoint scanning**: Lists all `ARK_*.lua` scripts in each worktree
 - **State persistence**: Remembers your last worktree and app selection
 - **Single action**: Register once in REAPER, use forever
@@ -46,16 +46,17 @@ ARK DevKit expects worktrees to follow this naming convention:
 
 ```
 /base/dir/
-  ARKITEKT-Toolkit/          (main worktree, key: "main")
-  ARKITEKT-Toolkit-tiles/    (feature worktree, key: "tiles")
-  ARKITEKT-Toolkit-theme/    (feature worktree, key: "theme")
+  ARKITEKT/                  (ReaPack/production - ignored)
+  ARKITEKT-Dev/              (main dev worktree, key: "main")
+  ARKITEKT-Dev-tiles/        (feature worktree, key: "tiles")
+  ARKITEKT-Dev-theme/        (feature worktree, key: "theme")
   ...
 ```
 
 Each worktree should have:
 
 ```
-ARKITEKT-Toolkit*/
+ARKITEKT-Dev*/
   scripts/
     AppName/
       ARK_AppName.lua        (entrypoint)
